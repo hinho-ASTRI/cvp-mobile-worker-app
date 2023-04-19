@@ -1,0 +1,25 @@
+{
+  "translation": {
+    "Hello": "Hello",
+    "WelcomeText": "Please Login to Your Account",
+    "UsernamePlaceholder": "Username",
+    "PasswordPlaceholder": "Password",
+    "SignIn": "Sign In",
+    "ForgotPassword": "Forgot Password?",
+    "SignUp": "Don't have an account? Sign up here",
+    "CertList": "Cert List",
+    "CertInfo": "Cert Info",
+    "CertId": "Cert ID",
+    "Settings": "Settings",
+    "QRCodeScanner": "QR Code Scanner",
+    "Language": "Language",
+    "SignOut": "Sign Out",
+    "AboutCIC": "About CIC",
+    "Build": "Build",
+    "FontSize": "Font Size",
+    "Smaller": "Smaller",
+    "Default": "Default",
+    "Larger": "Larger",
+    "AdjustFontSize": "Adjust Font Size"
+  }
+}

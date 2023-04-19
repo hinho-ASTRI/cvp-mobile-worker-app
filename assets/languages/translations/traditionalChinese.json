@@ -1,0 +1,25 @@
+{
+  "translation": {
+    "Hello": "你好",
+    "WelcomeText": "請登入您的賬戶",
+    "UsernamePlaceholder": "用户名稱",
+    "PasswordPlaceholder": "密碼",
+    "SignIn": "登入",
+    "ForgotPassword": "忘記密碼？",
+    "SignUp": "沒有帳戶？ 按這註冊",
+    "CertList": "證書列表",
+    "CertInfo": "證書內容",
+    "CertId": "證書號碼",
+    "Settings": "設定",
+    "QRCodeScanner": "二維碼掃描器",
+    "Language": "語言",
+    "SignOut": "登出",
+    "AboutCIC": "關於建造業議會",
+    "Build": "程式版本",
+    "FontSize": "字體大小",
+    "Smaller": "較小",
+    "Default": "標準",
+    "Larger": "較大",
+    "AdjustFontSize": "調整字體大小"
+  }
+}

@@ -1,0 +1,38 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export interface ListItem {
+  id: string;
+  value: string;
+}
+
+const getCertIds = async (username: string): Promise<ListItem[]> => {
+  const accessToken = (await AsyncStorage.getItem("accessToken")) as string;
+
+  // Retrieving cert id list from API server
+  // TODO: for `myuser` in the url path, it should be filled in with the username, just now we only have one user, i.e "myuser".
+  const response = await fetch(
+    `http://192.168.1.12:8080/workers/${username}/cert_list`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: accessToken,
+      },
+    }
+  );
+  // data is an array of string, i.e. array of cert ids
+  const data = await response.json();
+
+  const items: ListItem[] = data.map((value: string, index: number) => {
+    return {
+      id: index.toString(),
+      value,
+    };
+  });
+
+  console.log(items);
+
+  return items;
+};
+
+export default getCertIds;

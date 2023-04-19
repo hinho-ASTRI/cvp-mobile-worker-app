@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "cvp-worker-expo-router-app",
+    "slug": "cvp-worker-expo-router-app",
+    "plugins": ["expo-localization"],
+    "locales": {
+      "en": "./languages/english.json",
+      "zhHK": "./languages/traditionalChinese.json",
+      "zhCN": "./languages/simplifiedChinese.json"
+    }
+  }
+}

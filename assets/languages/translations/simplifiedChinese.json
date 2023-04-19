@@ -1,0 +1,25 @@
+{
+  "translation": {
+    "Hello": "你好",
+    "WelcomeText": "请登入您的账户",
+    "UsernamePlaceholder": "用户名称",
+    "PasswordPlaceholder": "密码",
+    "SignIn": "登入",
+    "ForgotPassword": "忘记密码？",
+    "SignUp": "没有帐户？按这注册",
+    "CertList": "证书列表",
+    "CertInfo": "证书内容",
+    "CertId": "证书号码",
+    "Settings": "设定",
+    "QRCodeScanner": "二维码扫描器",
+    "Language": "语言",
+    "SignOut": "登出",
+    "AboutCIC": "关于建造业议会",
+    "Build": "程式版本",
+    "FontSize": "字体大小",
+    "Smaller": "较小",
+    "Default": "标准",
+    "Larger": "较大",
+    "AdjustFontSize": "调整字体大小"
+  }
+}
