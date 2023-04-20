@@ -40,6 +40,7 @@ export default function FontSlider() {
   const valueChangeHandler = (value: number) => {
     setValue(value);
     AsyncStorage.setItem("fontSize", value.toString());
+    getFontSizeData();
   };
 
   return (

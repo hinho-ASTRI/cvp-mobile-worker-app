@@ -12,6 +12,11 @@ export default function Layout() {
       <Stack
         screenOptions={{
           statusBarColor: isDarkTheme ? "white" : "black",
+          headerStyle: {
+            backgroundColor: isDarkTheme ? "#000" : "#fff",
+          },
+          headerTintColor: isDarkTheme ? "#fff" : "#000",
+
           // statusBarStyle: isDarkTheme ? "light" : "dark",
         }}
       >

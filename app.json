@@ -8,15 +8,21 @@
     "ios": {
       "infoPlist": {
         "UIViewControllerBasedStatusBarAppearance": true
-      }
+      },
+      "bundleIdentifier": "com.user9510.cvpworkerexporouterapp"
     },
     "name": "cvp-worker-expo-router-app",
     "slug": "cvp-worker-expo-router-app",
-    "plugins": ["expo-localization"],
+    "plugins": [
+      "expo-localization"
+    ],
     "locales": {
       "en": "./languages/english.json",
       "zhHK": "./languages/traditionalChinese.json",
       "zhCN": "./languages/simplifiedChinese.json"
+    },
+    "android": {
+      "package": "com.user9510.cvpworkerexporouterapp"
     }
   }
 }

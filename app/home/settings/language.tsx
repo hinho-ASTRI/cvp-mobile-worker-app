@@ -10,19 +10,6 @@ export default function Language() {
   const { i18n } = useTranslation();
   const fontSizeData = useAtomValue(fontSizeAtom);
 
-  const getLanguageData = async () => {
-    try {
-      const fontSize = await AsyncStorage.getItem("fontSize");
-      if (fontSize !== null) {
-        const appFontSize = parseInt(fontSize);
-        setStoredValue(appFontSize);
-        setFontSizeData(appFontSize);
-      }
-    } catch (e) {
-      // error reading value
-    }
-  };
-
   return (
     <FlatList
       data={languageList}

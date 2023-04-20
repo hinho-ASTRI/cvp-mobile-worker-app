@@ -13,19 +13,11 @@ import {
 import { useAtomValue } from "jotai";
 import { useAtom } from "jotai";
 
+import colorsTheme from "../../../assets/colors/colorsTheme";
 import { fontSizeAtom } from "~atoms/fontSize";
 import { DarkThemeAtom } from "~atoms/darkTheme";
 
-Colors.loadSchemes({
-  light: {
-    screenBG: Colors.white,
-    textColor: Colors.grey10,
-  },
-  dark: {
-    screenBG: Colors.grey10,
-    textColor: Colors.white,
-  },
-});
+Colors.loadSchemes(colorsTheme);
 
 const setTheme = (dark: boolean): void => {
   Colors.setScheme(dark ? "dark" : "light");
@@ -34,7 +26,10 @@ const setTheme = (dark: boolean): void => {
 export default function Theme() {
   const fontSizeData = useAtomValue(fontSizeAtom);
   const [isDarkTheme, setIsDarkTheme] = useAtom(DarkThemeAtom);
-
+  const handler = (item) => {
+    setIsDarkTheme(item.value);
+    AsyncStorage.setItem("isDarkMode", item.value.toString());
+  };
   const { t } = useTranslation();
   const themeList: { theme: string; value: boolean; id: string }[] = [
     {
@@ -53,7 +48,6 @@ export default function Theme() {
       const isDarkMode = await AsyncStorage.getItem("isDarkMode");
       if (isDarkMode !== null) {
         const darkMode = isDarkMode === "true";
-        console.log("stored");
         setIsDarkTheme(darkMode);
       }
     } catch (e) {
@@ -67,7 +61,7 @@ export default function Theme() {
 
   const [darkTheme, setDarkTheme] = useState<boolean>(isDarkTheme ?? false);
 
-  setTheme(isDarkTheme);
+  // setTheme(isDarkTheme);
 
   return (
     <>
@@ -91,7 +85,9 @@ export default function Theme() {
               onPress={() => {
                 setDarkTheme(item.value);
                 setIsDarkTheme(item.value);
+                setTheme(!isDarkTheme);
                 AsyncStorage.setItem("isDarkMode", item.value.toString());
+                // handler(item);
               }}
               className="justify-between flex-row border-b-2 py-4 border-slate-300"
             >

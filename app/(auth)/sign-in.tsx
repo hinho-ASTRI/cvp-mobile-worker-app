@@ -1,8 +1,7 @@
 import { Text, View, Image, Alert } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Stack } from "expo-router";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTranslation } from "react-i18next";
 
 import LanguagePicker from "~components/LanguagePicker";
@@ -10,60 +9,17 @@ import DismissKeyboard from "~components/DismissKeyboard";
 import CustomInput from "~components/CustomInput";
 import CustomButton from "~components/buttons/CustomButton";
 import { useAuth } from "~context/auth";
+import loginHandler from "~components/handler/loginHandler";
 
 export default function SignIn() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const { signIn } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    fetch("http://localhost:8080/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Login failed");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        // store tokens in AsyncStorage
-        AsyncStorage.setItem("accessToken", data.token);
-        AsyncStorage.setItem("refreshToken", data.refresh_token);
-        // navigate to MainScreen component
-        signIn();
-      })
-      .catch((error) => {
-        console.error(error);
-        Alert.alert(
-          "Login failed",
-          "Please check your username and password and try again."
-        );
-      });
-  };
-
-  const getLanguageData = async () => {
-    try {
-      const language = await AsyncStorage.getItem("language");
-      if (language !== null) {
-        i18n.changeLanguage(language);
-      }
-    } catch (e) {
-      // error reading value
-    }
-  };
-
-  useEffect(() => {
-    getLanguageData();
-  }, []);
+  const handlerLogin = () => loginHandler(username, password, signIn);
 
   return (
     <>
@@ -98,7 +54,7 @@ export default function SignIn() {
             addStyle={{ width: "70%", flexDirection: "column" }}
             widthPerct="80%"
             text={`${t("SignIn")}`}
-            onPress={() => handleLogin()}
+            onPress={() => handlerLogin()}
             bgColor="black"
             fgColor="white"
             flexDir="column"

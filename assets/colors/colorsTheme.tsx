@@ -1,6 +1,15 @@
 import { Colors } from "react-native-ui-lib";
 
-export default Colors.loadSchemes({
+type theme = {
+  screenBG: string;
+  textColor: string;
+};
+
+type mode = "light" | "dark";
+
+const colorsTheme: {
+  [key in mode]: theme;
+} = {
   light: {
     screenBG: Colors.white,
     textColor: Colors.grey10,
@@ -9,4 +18,6 @@ export default Colors.loadSchemes({
     screenBG: Colors.grey10,
     textColor: Colors.white,
   },
-});
+};
+
+export default colorsTheme;
