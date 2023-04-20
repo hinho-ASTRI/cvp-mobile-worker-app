@@ -1,12 +1,12 @@
 import { Text, Pressable } from "react-native";
 import { ListItem } from "~components/functions/getCertIds";
 import { useRouter } from "expo-router";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 
 import { fontSizeAtom } from "~atoms/fontSize";
 
 const certListItem = ({ item }: { item: ListItem }) => {
-  const [fontSizeData, setFontSizeData] = useAtom(fontSizeAtom);
+  const fontSizeData = useAtomValue(fontSizeAtom);
 
   const router = useRouter();
 

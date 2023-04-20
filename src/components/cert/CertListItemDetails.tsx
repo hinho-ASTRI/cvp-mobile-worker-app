@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 
 import { fontSizeAtom } from "~atoms/fontSize";
 
@@ -9,7 +9,7 @@ type CertListItemProps = {
 };
 
 const CertListItemDetails: React.FC<CertListItemProps> = (props) => {
-  const [fontSizeData, setFontSizeData] = useAtom(fontSizeAtom);
+  const fontSizeData = useAtomValue(fontSizeAtom);
 
   const { t } = useTranslation();
 

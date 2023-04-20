@@ -20,6 +20,8 @@
     "Smaller": "Smaller",
     "Default": "Default",
     "Larger": "Larger",
-    "AdjustFontSize": "Adjust Font Size"
+    "AdjustFontSize": "Adjust Font Size",
+    "DarkMode": "Dark Mode",
+    "LightMode": "Light Mode"
   }
 }

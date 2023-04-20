@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";
 import { AntDesign } from "@expo/vector-icons";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 
 import { fontSizeAtom } from "~atoms/fontSize";
 import { useAuth } from "~context/auth";
@@ -13,7 +13,7 @@ export default function Settings() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [fontSizeData, setFontSizeData] = useAtom(fontSizeAtom);
+  const fontSizeData = useAtomValue(fontSizeAtom);
 
   const _handlePressButtonAsync = async () => {
     let result = await openBrowserAsync("https://www.cic.hk/chi/");
@@ -26,11 +26,16 @@ export default function Settings() {
         router.push("/home/settings/language");
       },
     },
-
     {
       name: `${t("FontSize")}`,
       onPress: () => {
-        router.push("/home/settings/font");
+        router.push("/home/settings/fontSize");
+      },
+    },
+    {
+      name: `${t("DarkMode")}`,
+      onPress: () => {
+        router.push("/home/settings/theme");
       },
     },
     {
@@ -46,13 +51,13 @@ export default function Settings() {
   return (
     <>
       <FlatList
-        className="bg-white"
+        className="bg-white dark:bg-black"
         data={settingsList}
         ListFooterComponent={
           <View className="opacity-60 justify-between flex-row border-b-2 py-4 mx-2 border-slate-300 ">
-            <Text className={`ml-4 text-${fontSizeData + 1}xl`}>{`${t(
-              "Build"
-            )}`}</Text>
+            <Text
+              className={`ml-4 text-${fontSizeData + 1}xl dark:text-white`}
+            >{`${t("Build")}`}</Text>
             <Text className={`mr-4 text-${fontSizeData + 1}xl`}>v 1.0.0</Text>
           </View>
         }
@@ -61,7 +66,7 @@ export default function Settings() {
             onPress={item.onPress}
             className="justify-between flex-row border-b-2 py-4 mx-2 border-slate-300"
           >
-            <Text className={`ml-4 text-${fontSizeData + 1}xl`}>
+            <Text className={`ml-4 text-${fontSizeData + 1}xl dark:text-white`}>
               {item.name}
             </Text>
             <View className="mr-4">

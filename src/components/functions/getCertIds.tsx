@@ -11,7 +11,7 @@ const getCertIds = async (username: string): Promise<ListItem[]> => {
   // Retrieving cert id list from API server
   // TODO: for `myuser` in the url path, it should be filled in with the username, just now we only have one user, i.e "myuser".
   const response = await fetch(
-    `http://192.168.1.12:8080/workers/${username}/cert_list`,
+    `http://localhost:8080/workers/${username}/cert_list`,
     {
       method: "GET",
       headers: {

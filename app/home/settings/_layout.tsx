@@ -14,7 +14,17 @@ export default function Layout() {
         name="language"
         options={{ headerTitle: `${t("Language")}` }}
       />
-      <Stack.Screen name="font" options={{ headerTitle: `${t("FontSize")}` }} />
+      <Stack.Screen
+        name="fontSize"
+        options={{ headerTitle: `${t("FontSize")}` }}
+      />
+
+      <Stack.Screen
+        name="theme"
+        options={{
+          headerTitle: `${t("DarkMode")}`,
+        }}
+      />
       <Stack.Screen name="Settings" />
     </Stack>
   );

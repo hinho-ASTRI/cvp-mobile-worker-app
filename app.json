@@ -5,6 +5,11 @@
     "web": {
       "bundler": "metro"
     },
+    "ios": {
+      "infoPlist": {
+        "UIViewControllerBasedStatusBarAppearance": true
+      }
+    },
     "name": "cvp-worker-expo-router-app",
     "slug": "cvp-worker-expo-router-app",
     "plugins": ["expo-localization"],

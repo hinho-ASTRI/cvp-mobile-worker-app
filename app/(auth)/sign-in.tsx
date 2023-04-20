@@ -1,5 +1,5 @@
 import { Text, View, Image, Alert } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Stack } from "expo-router";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -12,14 +12,15 @@ import CustomButton from "~components/buttons/CustomButton";
 import { useAuth } from "~context/auth";
 
 export default function SignIn() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
   const { signIn } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    fetch("http://192.168.1.12:8080/login", {
+    fetch("http://localhost:8080/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,6 +49,21 @@ export default function SignIn() {
         );
       });
   };
+
+  const getLanguageData = async () => {
+    try {
+      const language = await AsyncStorage.getItem("language");
+      if (language !== null) {
+        i18n.changeLanguage(language);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    getLanguageData();
+  }, []);
 
   return (
     <>

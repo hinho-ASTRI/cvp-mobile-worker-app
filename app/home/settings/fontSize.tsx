@@ -1,6 +1,6 @@
 import Slider from "@react-native-community/slider";
 import { View, Text } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAtom } from "jotai";
@@ -28,7 +28,10 @@ export default function FontSlider() {
       // error reading value
     }
   };
-  getFontSizeData();
+
+  useEffect(() => {
+    getFontSizeData();
+  }, []);
 
   const [storedValue, setStoredValue] = useState<null | number>(null);
   const [value, setValue] = useState<number>(storedValue ?? 1);
@@ -37,7 +40,6 @@ export default function FontSlider() {
   const valueChangeHandler = (value: number) => {
     setValue(value);
     AsyncStorage.setItem("fontSize", value.toString());
-    getFontSizeData();
   };
 
   return (

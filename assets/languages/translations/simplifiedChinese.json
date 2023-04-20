@@ -20,6 +20,8 @@
     "Smaller": "较小",
     "Default": "标准",
     "Larger": "较大",
-    "AdjustFontSize": "调整字体大小"
+    "AdjustFontSize": "调整字体大小",
+    "DarkMode": "深色模式",
+    "LightMode": "浅色模式"
   }
 }
