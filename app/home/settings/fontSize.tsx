@@ -41,6 +41,7 @@ export default function FontSlider() {
     setValue(value);
     AsyncStorage.setItem("fontSize", value.toString());
     getFontSizeData();
+    console.log("fontSizeData", fontSizeData);
   };
 
   return (
