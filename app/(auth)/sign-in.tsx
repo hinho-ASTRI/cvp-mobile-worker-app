@@ -39,7 +39,6 @@ export default function SignIn() {
         return response.text();
       })
       .then((data) => {
-        console.log("accessToken", data);
         // store tokens in AsyncStorage
         // AsyncStorage.setItem("accessToken", data.token);
         AsyncStorage.setItem("accessToken", data);
