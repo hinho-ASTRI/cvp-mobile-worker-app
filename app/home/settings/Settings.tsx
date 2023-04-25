@@ -4,12 +4,13 @@ import { useRouter } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";
 import { AntDesign } from "@expo/vector-icons";
 import { useAtomValue } from "jotai";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { fontSizeAtom } from "~atoms/fontSize";
-import { useAuth } from "~context/auth";
+// import { useAuth } from "~context/auth";
 
 export default function Settings() {
-  const { signOut } = useAuth();
+  // const { signOut } = useAuth();
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -44,7 +45,11 @@ export default function Settings() {
     },
     {
       name: `${t("SignOut")}`,
-      onPress: () => signOut(),
+      onPress: () => {
+        // signOut();
+        AsyncStorage.removeItem("accessToken");
+        router.replace("/(auth)/sign-in");
+      },
     },
   ];
   console.log(fontSizeData);

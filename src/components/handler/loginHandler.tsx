@@ -1,11 +1,10 @@
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const loginHandler: (
-  username: string,
-  password: string,
-  signIn: () => void
-) => void = (username, password, signIn) => {
+const loginHandler: (username: string, password: string) => void = (
+  username,
+  password
+) => {
   fetch("http://localhost:8080/login", {
     method: "POST",
     headers: {
@@ -24,8 +23,6 @@ const loginHandler: (
       // store tokens in AsyncStorage
       AsyncStorage.setItem("accessToken", data.token);
       AsyncStorage.setItem("refreshToken", data.refresh_token);
-      // navigate to MainScreen component
-      signIn();
     })
     .catch((error) => {
       console.error(error);

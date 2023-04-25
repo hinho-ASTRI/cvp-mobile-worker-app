@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import getCertIds from "~components/functions/getCertIds";
-import { ListItem } from "~components/functions/getCertIds";
+import getCertIds from "~functions/getCertIds";
+import { ListItem } from "~functions/getCertIds";
 import CertList from "~components/cert/CertList";
 
 const CertListPage: React.FC = () => {
@@ -9,7 +9,7 @@ const CertListPage: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getCertIds("myuser");
+      const data = await getCertIds("user");
       setItems(data);
     };
 

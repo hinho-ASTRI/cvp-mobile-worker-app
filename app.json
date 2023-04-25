@@ -5,7 +5,20 @@
     "web": {
       "bundler": "metro"
     },
+    "orientation": "portrait",
     "ios": {
+      "splash": {
+        "image": "./assets/icon/CIC_logo.svg.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#e5e5e5"
+      },
+      "android": {
+        "splash": {
+          "image": "./assets/icon/CIC_logo.svg.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#e5e5e5"
+        }
+      },
       "infoPlist": {
         "UIViewControllerBasedStatusBarAppearance": true
       },
@@ -13,9 +26,7 @@
     },
     "name": "cvp-worker-expo-router-app",
     "slug": "cvp-worker-expo-router-app",
-    "plugins": [
-      "expo-localization"
-    ],
+    "plugins": ["expo-localization"],
     "locales": {
       "en": "./languages/english.json",
       "zhHK": "./languages/traditionalChinese.json",

@@ -2,7 +2,7 @@ import { FlatList, View } from "react-native";
 import { useState } from "react";
 
 import CertListItem from "./CertListItem";
-import { ListItem } from "~components/functions/getCertIds";
+import { ListItem } from "~functions/getCertIds";
 
 type CertListProprs = {
   data: ListItem[];

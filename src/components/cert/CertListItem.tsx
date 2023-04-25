@@ -1,5 +1,5 @@
 import { Text, Pressable } from "react-native";
-import { ListItem } from "~components/functions/getCertIds";
+import { ListItem } from "~functions/getCertIds";
 import { useRouter } from "expo-router";
 import { useAtomValue } from "jotai";
 

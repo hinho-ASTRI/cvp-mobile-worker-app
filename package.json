@@ -23,6 +23,7 @@
     "expo-dev-client": "^2.2.1",
     "expo-localization": "~14.1.1",
     "expo-router": "^1.2.0",
+    "expo-screen-orientation": "^5.1.1",
     "expo-splash-screen": "~0.18.1",
     "expo-status-bar": "~1.4.2",
     "expo-system-ui": "^2.2.1",
