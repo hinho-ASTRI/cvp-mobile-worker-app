@@ -7,33 +7,52 @@
     },
     "orientation": "portrait",
     "ios": {
+      "infoPlist": {
+        "UIViewControllerBasedStatusBarAppearance": false
+      },
       "splash": {
         "image": "./assets/icon/CIC_logo.svg.png",
         "resizeMode": "contain",
         "backgroundColor": "#e5e5e5"
       },
-      "android": {
-        "splash": {
-          "image": "./assets/icon/CIC_logo.svg.png",
-          "resizeMode": "contain",
-          "backgroundColor": "#e5e5e5"
-        }
-      },
-      "infoPlist": {
-        "UIViewControllerBasedStatusBarAppearance": true
-      },
       "bundleIdentifier": "com.user9510.cvpworkerexporouterapp"
     },
-    "name": "cvp-worker-expo-router-app",
-    "slug": "cvp-worker-expo-router-app",
-    "plugins": ["expo-localization"],
-    "locales": {
-      "en": "./languages/english.json",
-      "zhHK": "./languages/traditionalChinese.json",
-      "zhCN": "./languages/simplifiedChinese.json"
-    },
     "android": {
+      "splash": {
+        "image": "./assets/icon/CIC_logo.svg.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#e5e5e5"
+      },
       "package": "com.user9510.cvpworkerexporouterapp"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a1a6467f-5085-4e93-a182-7ac5ea810aee"
+      }
+    }
+  },
+  "name": "CVP-Worker-app",
+  "icon": "./assets/icon/CIC_logo_icon.png",
+  "slug": "cvp-worker-expo-router-app",
+  "plugins": [
+    [
+      "expo-local-authentication",
+      {
+        "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+      }
+    ]
+  ],
+  "locales": {
+    "en": "./languages/english.json",
+    "zhHK": "./languages/traditionalChinese.json",
+    "zhCN": "./languages/simplifiedChinese.json"
+  },
+  "android": {
+    "package": "com.user9510.cvpworkerexporouterapp"
+  },
+  "extra": {
+    "eas": {
+      "projectId": "a1a6467f-5085-4e93-a182-7ac5ea810aee"
     }
   }
 }
