@@ -14,8 +14,6 @@ export default function Layout() {
           backgroundColor: isDarkTheme ? "#000" : "#fff",
         },
         headerTintColor: isDarkTheme ? "#fff" : "#000",
-
-        // statusBarStyle: isDarkTheme ? "light" : "dark",
       }}
     >
       <Stack.Screen name="index" />

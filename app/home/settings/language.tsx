@@ -1,4 +1,5 @@
-import { Text, Pressable, FlatList } from "react-native";
+import { Text } from "react-native-ui-lib";
+import { Pressable, FlatList } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAtomValue } from "jotai";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,7 +22,10 @@ export default function Language() {
           }}
           className="flex-row border-b-2 py-4 mx-2 border-slate-300"
         >
-          <Text className={`ml-4 text-${fontSizeData + 1}xl text-start`}>
+          <Text
+            textColor
+            className={`ml-4 text-${fontSizeData + 1}xl text-start`}
+          >
             {item}
           </Text>
         </Pressable>

@@ -15,6 +15,7 @@ export default function Layout() {
           backgroundColor: isDarkTheme ? "#000" : "#fff",
         },
         headerTintColor: isDarkTheme ? "#fff" : "#000",
+        contentStyle: { backgroundColor: isDarkTheme ? "#000" : "#fff" },
       }}
     >
       <Stack.Screen
@@ -22,8 +23,6 @@ export default function Layout() {
         options={{
           headerTitle: `${t("Settings")}`,
           statusBarColor: isDarkTheme ? "white" : "black",
-
-          // statusBarStyle: isDarkTheme ? "light" : "dark",
         }}
       />
       <Stack.Screen

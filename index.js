@@ -5,7 +5,11 @@ import { ExpoRoot } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 require("react-native-ui-lib/config").setConfig({ appScheme: "default" });
 import { useState, useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
 import { useSetAtom } from "jotai";
+import { useAtomValue } from "jotai";
+import { DarkThemeAtom } from "~atoms/darkTheme";
+
 import { isLoggedInAtom } from "~atoms/isLoggedIn";
 
 // FOR TRANSLATION
@@ -19,6 +23,8 @@ import getLanguageData from "~functions/getLanguageData";
 const queryClient = new QueryClient();
 
 export function App() {
+  const isDarkTheme = useAtomValue(DarkThemeAtom);
+
   const ctx = require.context("./app");
   const { i18n } = useTranslation();
 
@@ -48,6 +54,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ExpoRoot context={ctx} />
+      <StatusBar style={isDarkTheme ? "light" : "dark"} />
     </QueryClientProvider>
   );
 }

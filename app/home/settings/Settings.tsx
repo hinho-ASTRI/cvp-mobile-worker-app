@@ -1,16 +1,18 @@
-import { Text, Pressable, FlatList, View } from "react-native";
+import { Pressable, FlatList, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";
 import { AntDesign } from "@expo/vector-icons";
-import { useAtomValue } from "jotai";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Text } from "react-native-ui-lib";
+import { useAtomValue } from "jotai";
 
+import { DarkThemeAtom } from "~atoms/darkTheme";
 import { fontSizeAtom } from "~atoms/fontSize";
-// import { useAuth } from "~context/auth";
 
 export default function Settings() {
-  // const { signOut } = useAuth();
+  const isDarkTheme = useAtomValue(DarkThemeAtom);
+
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -46,7 +48,6 @@ export default function Settings() {
     {
       name: `${t("SignOut")}`,
       onPress: () => {
-        // signOut();
         AsyncStorage.removeItem("accessToken");
         router.replace("/(auth)/sign-in");
       },
@@ -56,14 +57,15 @@ export default function Settings() {
   return (
     <>
       <FlatList
-        className="bg-white dark:bg-black"
         data={settingsList}
         ListFooterComponent={
           <View className="opacity-60 justify-between flex-row border-b-2 py-4 mx-2 border-slate-300 ">
-            <Text
-              className={`ml-4 text-${fontSizeData + 1}xl dark:text-white`}
-            >{`${t("Build")}`}</Text>
-            <Text className={`mr-4 text-${fontSizeData + 1}xl`}>v 1.0.0</Text>
+            <Text textColor className={`ml-4 text-${fontSizeData + 1}xl`}>{`${t(
+              "Build"
+            )}`}</Text>
+            <Text textColor className={`mr-4 text-${fontSizeData + 1}xl`}>
+              v 1.0.0
+            </Text>
           </View>
         }
         renderItem={({ item }) => (
@@ -71,11 +73,18 @@ export default function Settings() {
             onPress={item.onPress}
             className="justify-between flex-row border-b-2 py-4 mx-2 border-slate-300"
           >
-            <Text className={`ml-4 text-${fontSizeData + 1}xl dark:text-white`}>
+            <Text
+              textColor
+              className={`ml-4 text-${fontSizeData + 1}xl dark:text-white`}
+            >
               {item.name}
             </Text>
             <View className="mr-4">
-              <AntDesign name="right" size={24} color="black" />
+              <AntDesign
+                name="right"
+                size={24}
+                color={isDarkTheme ? "white" : "black"}
+              />
             </View>
           </Pressable>
         )}

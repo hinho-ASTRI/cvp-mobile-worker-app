@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
-import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  View,
   Text,
   Colors,
   SortableList,
   TouchableOpacity,
 } from "react-native-ui-lib";
-import { useAtomValue } from "jotai";
-import { useAtom } from "jotai";
+import { useAtomValue, useAtom } from "jotai";
 
 import colorsTheme from "../../../assets/colors/colorsTheme";
 import { fontSizeAtom } from "~atoms/fontSize";
@@ -26,10 +22,7 @@ const setTheme = (dark: boolean): void => {
 export default function Theme() {
   const fontSizeData = useAtomValue(fontSizeAtom);
   const [isDarkTheme, setIsDarkTheme] = useAtom(DarkThemeAtom);
-  const handler = (item) => {
-    setIsDarkTheme(item.value);
-    AsyncStorage.setItem("isDarkMode", item.value.toString());
-  };
+
   const { t } = useTranslation();
   const themeList: { theme: string; value: boolean; id: string }[] = [
     {
@@ -62,40 +55,27 @@ export default function Theme() {
   const [darkTheme, setDarkTheme] = useState<boolean>(isDarkTheme ?? false);
 
   return (
-    <>
-      <Stack.Screen
-        options={{
-          headerStyle: {
-            backgroundColor: darkTheme ? "#000" : "#fff",
-          },
-          headerTintColor: darkTheme ? "#fff" : "#000",
-        }}
-      />
-      <View bg-screenBG flex-1>
-        <SortableList
-          className="px-4"
-          onOrderChange={null}
-          data={themeList}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              bg-screenBG
-              onPress={() => {
-                setDarkTheme(item.value);
-                setIsDarkTheme(item.value);
-                setTheme(item.value);
-                AsyncStorage.setItem("isDarkMode", item.value.toString());
-              }}
-              className="justify-between flex-row border-b-2 py-4 border-slate-300"
-            >
-              <Text textColor className={`ml-4 text-${fontSizeData + 1}xl `}>
-                {item.theme}
-              </Text>
-            </TouchableOpacity>
-          )}
-        />
-        <StatusBar style={darkTheme ? "light" : "dark"} />
-      </View>
-    </>
+    <SortableList
+      className="px-4"
+      onOrderChange={null}
+      data={themeList}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <TouchableOpacity
+          bg-screenBG
+          onPress={() => {
+            setDarkTheme(item.value);
+            setIsDarkTheme(item.value);
+            setTheme(item.value);
+            AsyncStorage.setItem("isDarkMode", item.value.toString());
+          }}
+          className="justify-between flex-row border-b-2 py-4 border-slate-300"
+        >
+          <Text textColor className={`ml-4 text-${fontSizeData + 1}xl `}>
+            {item.theme}
+          </Text>
+        </TouchableOpacity>
+      )}
+    />
   );
 }

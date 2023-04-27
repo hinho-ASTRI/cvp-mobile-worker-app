@@ -1,10 +1,12 @@
 import Slider from "@react-native-community/slider";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { Text } from "react-native-ui-lib";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 
+import { DarkThemeAtom } from "~atoms/darkTheme";
 import { fontSizeAtom } from "~atoms/fontSize";
 
 enum FontSize {
@@ -14,18 +16,16 @@ enum FontSize {
 }
 
 export default function FontSlider() {
+  const isDarkTheme = useAtomValue(DarkThemeAtom);
+
   const [fontSizeData, setFontSizeData] = useAtom(fontSizeAtom);
 
   const getFontSizeData = async () => {
-    try {
-      const fontSize = await AsyncStorage.getItem("fontSize");
-      if (fontSize !== null) {
-        const appFontSize = parseInt(fontSize);
-        setStoredValue(appFontSize);
-        setFontSizeData(appFontSize);
-      }
-    } catch (e) {
-      // error reading value
+    const fontSize = await AsyncStorage.getItem("fontSize");
+    if (fontSize !== null) {
+      const appFontSize = parseInt(fontSize);
+      setStoredValue(appFontSize);
+      setFontSizeData(appFontSize);
     }
   };
 
@@ -48,13 +48,15 @@ export default function FontSlider() {
     <View className="mx-16">
       <View className="mt-10">
         <View className="items-center mb-4">
-          <Text className="text-2xl">{`${t(`${FontSize[value]}`)}`}</Text>
+          <Text textColor className="text-2xl">{`${t(
+            `${FontSize[value]}`
+          )}`}</Text>
         </View>
         <Slider
           minimumValue={0}
           maximumValue={2}
-          minimumTrackTintColor="#000000"
-          maximumTrackTintColor="#c7bdbdbd"
+          minimumTrackTintColor={isDarkTheme ? "#fff" : "#000000"}
+          maximumTrackTintColor={isDarkTheme ? "#847e7e" : "#c7bdbdbd"}
           step={1}
           tapToSeek={true}
           value={storedValue}
@@ -62,14 +64,17 @@ export default function FontSlider() {
         />
       </View>
       <View className="justify-between flex-row">
-        <Text className="my-3 ">A</Text>
-        <Text className="text-2xl">A</Text>
+        <Text textColor className="my-3 ">
+          A
+        </Text>
+        <Text textColor className="text-2xl">
+          A
+        </Text>
       </View>
       <View className="items-center">
-        <Text className={`text-${fontSizeData + 1}xl`}>{`${t(
+        <Text textColor className={`text-${fontSizeData + 1}xl`}>{`${t(
           `${t("AdjustFontSize")}`
         )}`}</Text>
-        {/* <Text className={`text-2xl`}>{fontSizeData}</Text> */}
       </View>
     </View>
   );

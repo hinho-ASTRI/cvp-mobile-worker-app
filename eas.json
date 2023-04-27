@@ -23,6 +23,11 @@
         "simulator": true
       }
     },
+    "iosTheme": {
+      "ios": {
+        "simulator": true
+      }
+    },
     "production": {}
   }
 }

@@ -3,6 +3,7 @@ import { FontAwesome } from "@expo/vector-icons/";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useAtomValue } from "jotai";
+import { StatusBar } from "expo-status-bar";
 
 import { DarkThemeAtom } from "~atoms/darkTheme";
 import TabBarIcon from "~components/tabBarIcon/tabBarIcon";
@@ -20,6 +21,10 @@ export default function Layout1() {
         tabBarStyle: {
           backgroundColor: isDarkTheme ? "black" : "white",
         },
+        headerStyle: {
+          backgroundColor: isDarkTheme ? "#000" : "#fff",
+        },
+        headerTintColor: isDarkTheme ? "#fff" : "#000",
       }}
     >
       <Tabs.Screen

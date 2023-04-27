@@ -12,10 +12,11 @@ const colorsTheme: {
 } = {
   light: {
     screenBG: Colors.white,
-    textColor: Colors.grey10,
+    textColor: Colors.black,
   },
   dark: {
-    screenBG: Colors.grey10,
+    // screenBG: Colors.grey10,
+    screenBG: Colors.black,
     textColor: Colors.white,
   },
 };

@@ -1,8 +1,8 @@
-import { Text, Pressable } from "react-native";
-import { ListItem } from "~functions/getCertIds";
+import { Text, TouchableOpacity } from "react-native-ui-lib";
 import { useRouter } from "expo-router";
 import { useAtomValue } from "jotai";
 
+import { ListItem } from "~functions/getCertIds";
 import { fontSizeAtom } from "~atoms/fontSize";
 
 const certListItem = ({ item }: { item: ListItem }) => {
@@ -11,7 +11,8 @@ const certListItem = ({ item }: { item: ListItem }) => {
   const router = useRouter();
 
   return (
-    <Pressable
+    <TouchableOpacity
+      bg-screenBG
       className="border-[#ccc] my-2 mx-2 p-1.5 rounded border"
       onPress={() => {
         router.push({
@@ -20,8 +21,10 @@ const certListItem = ({ item }: { item: ListItem }) => {
         console.log(item.id);
       }}
     >
-      <Text className={`text-${fontSizeData + 1}xl`}>{item.value}</Text>
-    </Pressable>
+      <Text textColor className={`text-${fontSizeData + 1}xl`}>
+        {item.value}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
