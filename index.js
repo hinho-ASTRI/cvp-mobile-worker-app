@@ -5,11 +5,15 @@ import { ExpoRoot } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 require("react-native-ui-lib/config").setConfig({ appScheme: "default" });
 import { useState, useEffect } from "react";
+import { Colors } from "react-native-ui-lib";
 import { StatusBar } from "expo-status-bar";
 import { useSetAtom } from "jotai";
-import { useAtomValue } from "jotai";
-import { DarkThemeAtom } from "~atoms/darkTheme";
 
+import setTheme from "~functions/setTheme";
+import colorsTheme from "assets/colors/colorsTheme";
+
+import { DarkThemeAtom } from "~atoms/darkTheme";
+import { useAtom } from "jotai";
 import { isLoggedInAtom } from "~atoms/isLoggedIn";
 
 // FOR TRANSLATION
@@ -19,11 +23,14 @@ import { useTranslation } from "react-i18next";
 import { fontSizeAtom } from "~atoms/fontSize";
 import getFontSizeData from "~functions/getFontSizeData";
 import getLanguageData from "~functions/getLanguageData";
+import getIsDarkMode from "~functions/getIsDarkMode";
 
 const queryClient = new QueryClient();
 
+Colors.loadSchemes(colorsTheme);
+
 export function App() {
-  const isDarkTheme = useAtomValue(DarkThemeAtom);
+  const [isDarkTheme, setIsDarkTheme] = useAtom(DarkThemeAtom);
 
   const ctx = require.context("./app");
   const { i18n } = useTranslation();
@@ -46,9 +53,10 @@ export function App() {
   };
 
   useEffect(() => {
+    getAccessToken();
     getFontSizeData(setStoredValue, setFontSizeData);
     getLanguageData(i18n);
-    getAccessToken();
+    getIsDarkMode(setIsDarkTheme, setTheme);
   }, []);
 
   return (

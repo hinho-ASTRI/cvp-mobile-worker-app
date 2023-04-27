@@ -15,7 +15,6 @@ const colorsTheme: {
     textColor: Colors.black,
   },
   dark: {
-    // screenBG: Colors.grey10,
     screenBG: Colors.black,
     textColor: Colors.white,
   },

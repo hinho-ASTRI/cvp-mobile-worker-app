@@ -1,23 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  Text,
-  Colors,
-  SortableList,
-  TouchableOpacity,
-} from "react-native-ui-lib";
+import { Text, SortableList, TouchableOpacity } from "react-native-ui-lib";
+import setTheme from "~functions/setTheme";
 import { useAtomValue, useAtom } from "jotai";
 
-import colorsTheme from "../../../assets/colors/colorsTheme";
 import { fontSizeAtom } from "~atoms/fontSize";
 import { DarkThemeAtom } from "~atoms/darkTheme";
-
-Colors.loadSchemes(colorsTheme);
-
-const setTheme = (dark: boolean): void => {
-  Colors.setScheme(dark ? "dark" : "light");
-};
 
 export default function Theme() {
   const fontSizeData = useAtomValue(fontSizeAtom);
@@ -36,21 +25,6 @@ export default function Theme() {
       id: "1",
     },
   ];
-  const getIsDarkMode = async () => {
-    try {
-      const isDarkMode = await AsyncStorage.getItem("isDarkMode");
-      if (isDarkMode !== null) {
-        const darkMode = isDarkMode === "true";
-        setIsDarkTheme(darkMode);
-      }
-    } catch (e) {
-      // error reading value
-    }
-  };
-
-  useEffect(() => {
-    getIsDarkMode();
-  }, []);
 
   const [darkTheme, setDarkTheme] = useState<boolean>(isDarkTheme ?? false);
 
@@ -62,6 +36,7 @@ export default function Theme() {
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <TouchableOpacity
+          bg-screenBG
           onPress={() => {
             setDarkTheme(item.value);
             setIsDarkTheme(item.value);
