@@ -69,7 +69,7 @@ export default function FontSlider() {
         <Text className={`text-${fontSizeData + 1}xl`}>{`${t(
           `${t("AdjustFontSize")}`
         )}`}</Text>
-        <Text className={`text-3xl`}>{fontSizeData}</Text>
+        {/* <Text className={`text-2xl`}>{fontSizeData}</Text> */}
       </View>
     </View>
   );

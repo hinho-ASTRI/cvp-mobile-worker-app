@@ -1,4 +1,5 @@
 import "expo-router/entry";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { registerRootComponent } from "expo";
 import { ExpoRoot } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -22,18 +23,22 @@ export function App() {
   const { i18n } = useTranslation();
 
   const setFontSizeData = useSetAtom(fontSizeAtom);
-  const setIsLoggedInAtom = useSetAtom(isLoggedInAtom);
   const [storedValue, setStoredValue] = useState(null);
+  const setIsLoggedInAtom = useSetAtom(isLoggedInAtom);
+
   const getAccessToken = async () => {
-    try {
-      const accessToken = await AsyncStorage.getItem("accessToken");
-      if (accessToken !== null) {
-        setIsLoggedInAtom(true);
-      }
-    } catch (e) {
-      // error reading value
+    const accessToken = await AsyncStorage.getItem("accessToken");
+    if (accessToken !== null) {
+      setIsLoggedInAtom(true);
     }
+    console.log("login?", accessToken ? "yes" : "no");
+    setTimeout(() => {
+      if (accessToken != null) {
+      } else {
+      }
+    }, 2000);
   };
+
   useEffect(() => {
     getFontSizeData(setStoredValue, setFontSizeData);
     getLanguageData(i18n);

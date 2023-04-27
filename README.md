@@ -1,12 +1,11 @@
-# Expo Router Example
+# Worker Mobile App for CVP
 
 Use [`expo-router`](https://expo.github.io/router) to build native navigation using files in the `app/` directory.
 
 ## 🚀 How to use
 
-```sh
-npx create-react-native-app -t with-router
-```
+`npm start`
+Then press `a` for Android, `i` for iOS
 
 ## 📝 Notes
 

@@ -4,7 +4,7 @@ import { Dispatch } from "react";
 const getAccessToken: (
   setStoredValue: Dispatch<number>,
   setFontSizeData: Dispatch<number>
-) => void = async (setStoredValue, setFontSizeData) => {
+) => void = async () => {
   try {
     const accessToken = await AsyncStorage.getItem("accessToken");
     if (accessToken !== null) {

@@ -61,8 +61,6 @@ export default function Theme() {
 
   const [darkTheme, setDarkTheme] = useState<boolean>(isDarkTheme ?? false);
 
-  // setTheme(isDarkTheme);
-
   return (
     <>
       <Stack.Screen
@@ -85,9 +83,8 @@ export default function Theme() {
               onPress={() => {
                 setDarkTheme(item.value);
                 setIsDarkTheme(item.value);
-                setTheme(!isDarkTheme);
+                setTheme(item.value);
                 AsyncStorage.setItem("isDarkMode", item.value.toString());
-                // handler(item);
               }}
               className="justify-between flex-row border-b-2 py-4 border-slate-300"
             >

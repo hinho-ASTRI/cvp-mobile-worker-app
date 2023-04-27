@@ -7,11 +7,21 @@
     },
     "preview2": {
       "android": {
-        "gradleCommand": ":app:assembleRelease"
+        "gradleCommand": ":app:assembleDebug"
       }
     },
     "preview3": {
       "developmentClient": true
+    },
+    "ios": {
+      "ios": {
+        "simulator": true
+      }
+    },
+    "iosWithFaceId": {
+      "ios": {
+        "simulator": true
+      }
     },
     "production": {}
   }

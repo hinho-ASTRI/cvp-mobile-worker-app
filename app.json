@@ -1,15 +1,22 @@
 {
   "expo": {
     "scheme": "myapp",
+    "description": "A demo CVP-Worker app",
+    "name": "CVP Worker",
+    "icon": "./assets/icon/CIC_logo_icon.png",
     "userInterfaceStyle": "automatic",
     "web": {
       "bundler": "metro"
     },
     "orientation": "portrait",
     "ios": {
+      "supportsTablet": true,
       "infoPlist": {
-        "UIViewControllerBasedStatusBarAppearance": false
+        "UIViewControllerBasedStatusBarAppearance": true,
+        "NSFaceIDUsageDescription": "Allow $(PRODUCT_NAME) to use Face ID",
+        "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to use Camera"
       },
+      "icon": "./assets/icon/CIC_logo_icon.png",
       "splash": {
         "image": "./assets/icon/CIC_logo.svg.png",
         "resizeMode": "contain",
@@ -23,22 +30,33 @@
         "resizeMode": "contain",
         "backgroundColor": "#e5e5e5"
       },
+      "icon": "./assets/icon/CIC_logo_icon.png",
       "package": "com.user9510.cvpworkerexporouterapp"
     },
     "extra": {
       "eas": {
-        "projectId": "a1a6467f-5085-4e93-a182-7ac5ea810aee"
+        "projectId": "c88aa11d-10d6-4d86-aab6-3c53271651c2"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c88aa11d-10d6-4d86-aab6-3c53271651c2"
     }
   },
-  "name": "CVP-Worker-app",
-  "icon": "./assets/icon/CIC_logo_icon.png",
-  "slug": "cvp-worker-expo-router-app",
+  "slug": "cvp-worker",
   "plugins": [
     [
       "expo-local-authentication",
       {
         "faceIDPermission": "Allow $(PRODUCT_NAME) to use Face ID."
+      }
+    ],
+    [
+      "expo-updates",
+      {
+        "username": "user9510"
       }
     ]
   ],

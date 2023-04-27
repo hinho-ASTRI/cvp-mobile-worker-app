@@ -1,12 +1,12 @@
 import { Redirect } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useState } from "react";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { useState } from "react";
 import { useAtomValue } from "jotai";
 
 import { isLoggedInAtom } from "~atoms/isLoggedIn";
 
 export default function Entry() {
-  const [accessTokenData, setAccessToken] = useState<string>(null);
+  // const [accessTokenData, setAccessToken] = useState<string>(null);
   const isLoggedIn = useAtomValue(isLoggedInAtom);
   console.log("isloggedin", isLoggedIn);
   // const getAccessToken = async () => {

@@ -1,10 +1,11 @@
 import { Text, View, Image, Alert } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Stack } from "expo-router";
 import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as LocalAuthentication from "expo-local-authentication";
 
 import LanguagePicker from "~components/LanguagePicker";
 import DismissKeyboard from "~components/DismissKeyboard";
@@ -16,6 +17,32 @@ export default function SignIn() {
 
   const router = useRouter();
 
+  const [isBiometricSupported, setIsBiometricSupported] = useState(false);
+
+  // Check if hardware supports biometrics
+  useEffect(() => {
+    (async () => {
+      const compatible = await LocalAuthentication.hasHardwareAsync();
+      setIsBiometricSupported(compatible);
+    })();
+  });
+
+  const handleBiometricAuth = async () => {
+    const savedBiometrics = await LocalAuthentication.isEnrolledAsync();
+    if (!savedBiometrics) {
+      return Alert.alert(
+        "Biometric record not found",
+        "Please verify your identity with your password",
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+        // () => fallBackToDefaultAuth()
+      );
+    }
+    await LocalAuthentication.authenticateAsync({
+      promptMessage: "Login with Biometrics",
+      // disableDeviceFallback: true,
+    });
+  };
+  console.log("isBiometricSupported", isBiometricSupported);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -92,6 +119,18 @@ export default function SignIn() {
             fgColor="white"
             flexDir="column"
           />
+
+          {isBiometricSupported && (
+            <CustomButton
+              addStyle={{ width: "70%", flexDirection: "column" }}
+              widthPerct="80%"
+              text="Login with Face ID"
+              onPress={() => handleBiometricAuth()}
+              bgColor="black"
+              fgColor="white"
+              flexDir="column"
+            />
+          )}
 
           <Text className="text-black my-2 sm:my-6">{`${t(
             "ForgotPassword"

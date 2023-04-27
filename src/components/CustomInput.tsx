@@ -24,7 +24,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   return (
     <View className="w-[70%] bg-white my-3 flex-row border px-2 rounded-md border-[#e8e8e8]">
       <View className="w-[10%] justify-center items-center ">{icon}</View>
-      <View className="p-2.5 flex-1 flex-row">
+      <View className="p-2.5 flex-1 flex-row items-center">
         <TextInput
           className="w-[90%] mr-2"
           value={value}
@@ -32,8 +32,8 @@ const CustomInput: React.FC<CustomInputProps> = ({
           placeholder={placeholder}
           secureTextEntry={password ? (hidePass ? true : false) : false}
           autoCorrect={false}
-          autoCapitalize="none"
-          keyboardType="email-address"
+          autoCapitalize={"none"}
+          keyboardType="default"
         ></TextInput>
         <View>
           {password && (
