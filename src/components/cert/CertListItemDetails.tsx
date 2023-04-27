@@ -16,7 +16,10 @@ const CertListItemDetails: React.FC<CertListItemProps> = (props) => {
 
   return (
     <View className="flex-1 justify-center items-center">
-      <Text textColor className={`text-${fontSizeData + 1}xl`}>
+      <Text
+        textColor
+        className={`text-${fontSizeData + (fontSizeData === 2 ? 2 : 1)}xl`}
+      >
         {`${t("CertList")}`}: {props.id}
       </Text>
     </View>

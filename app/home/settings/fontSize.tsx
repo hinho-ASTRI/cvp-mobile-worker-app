@@ -64,7 +64,7 @@ export default function FontSlider() {
         />
       </View>
       <View className="justify-between flex-row">
-        <Text textColor className="my-3 ">
+        <Text textColor className="my-3">
           A
         </Text>
         <Text textColor className="text-2xl">
@@ -72,9 +72,10 @@ export default function FontSlider() {
         </Text>
       </View>
       <View className="items-center">
-        <Text textColor className={`text-${fontSizeData + 1}xl`}>{`${t(
-          `${t("AdjustFontSize")}`
-        )}`}</Text>
+        <Text
+          textColor
+          className={`text-${fontSizeData + (fontSizeData === 2 ? 2 : 1)}xl`}
+        >{`${t(`${t("AdjustFontSize")}`)}`}</Text>
       </View>
     </View>
   );
