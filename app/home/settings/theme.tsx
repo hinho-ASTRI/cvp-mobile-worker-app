@@ -45,12 +45,7 @@ export default function Theme() {
           }}
           className="justify-between flex-row border-b-2 py-4 border-slate-300"
         >
-          <Text
-            textColor
-            className={`ml-4 text-${
-              fontSizeData + (fontSizeData === 2 ? 2 : 1)
-            }xl `}
-          >
+          <Text textColor className={`ml-4 text-${fontSizeData + 1}xl `}>
             {item.theme}
           </Text>
         </TouchableOpacity>

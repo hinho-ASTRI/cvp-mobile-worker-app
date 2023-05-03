@@ -21,10 +21,7 @@ const certListItem = ({ item }: { item: ListItem }) => {
         console.log(item.id);
       }}
     >
-      <Text
-        textColor
-        className={`text-${fontSizeData + (fontSizeData === 2 ? 2 : 1)}xl`}
-      >
+      <Text textColor className={`text-${fontSizeData + 1}xl `}>
         {item.value}
       </Text>
     </TouchableOpacity>

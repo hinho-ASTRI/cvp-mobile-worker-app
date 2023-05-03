@@ -12,6 +12,8 @@
     "CertId": "证书号码",
     "Settings": "设定",
     "QRCodeScanner": "二维码扫描器",
+    "ScannedResult": "扫描结果",
+    "TapToScanAgain": "点击再次扫描",
     "Language": "语言",
     "SignOut": "登出",
     "AboutCIC": "关于建造业议会",
@@ -21,7 +23,9 @@
     "Default": "标准",
     "Larger": "较大",
     "AdjustFontSize": "调整字体大小",
+    "SampleText": "样本字体",
     "DarkMode": "深色模式",
-    "LightMode": "浅色模式"
+    "LightMode": "浅色模式",
+    "Profile": "用戶"
   }
 }

@@ -3,12 +3,13 @@ import { FontAwesome } from "@expo/vector-icons/";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useAtomValue } from "jotai";
-import { StatusBar } from "expo-status-bar";
 
+import { usernameAtom } from "~atoms/username";
 import { DarkThemeAtom } from "~atoms/darkTheme";
 import TabBarIcon from "~components/tabBarIcon/tabBarIcon";
 
 export default function Layout1() {
+  const usernameData = useAtomValue(usernameAtom);
   const { t } = useTranslation();
   const isDarkTheme = useAtomValue(DarkThemeAtom);
 
@@ -42,7 +43,7 @@ export default function Layout1() {
       <Tabs.Screen
         name="BarCodeScanner"
         options={{
-          href: "home/BarCodeScanner",
+          href: usernameData === "admin" ? "home/BarCodeScanner" : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <MaterialIcons
@@ -56,6 +57,18 @@ export default function Layout1() {
         }}
       />
 
+      <Tabs.Screen
+        name="Profile"
+        options={{
+          href: usernameData === "user" ? "home/Profile" : null,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon focused={focused}>
+              <FontAwesome name="user" size={focused ? 28 : 24} color={color} />
+            </TabBarIcon>
+          ),
+          headerTitle: `${t("Profile")}`,
+        }}
+      />
       <Tabs.Screen
         name="settings"
         options={{

@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 export interface ListItem {
   id: string;
   value: string;
@@ -9,7 +8,6 @@ const getCertIds = async (username: string): Promise<ListItem[]> => {
   const accessToken = (await AsyncStorage.getItem("accessToken")) as string;
 
   // Retrieving cert id list from API server
-  // TODO: for `myuser` in the url path, it should be filled in with the username, just now we only have one user, i.e "myuser".
   const response = await fetch(
     `http://192.168.2.100:8081/workers/${username}/cert_list`,
     {

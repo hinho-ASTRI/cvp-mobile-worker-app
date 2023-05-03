@@ -12,6 +12,8 @@
     "CertId": "Cert ID",
     "Settings": "Settings",
     "QRCodeScanner": "QR Code Scanner",
+    "ScannedResult": "Scanned Result",
+    "TapToScanAgain": "Tap to Scan Again",
     "Language": "Language",
     "SignOut": "Sign Out",
     "AboutCIC": "About CIC",
@@ -21,7 +23,9 @@
     "Default": "Default",
     "Larger": "Larger",
     "AdjustFontSize": "Adjust Font Size",
+    "SampleText": "Sample Text",
     "DarkMode": "Dark Mode",
-    "LightMode": "Light Mode"
+    "LightMode": "Light Mode",
+    "Profile": "Profile"
   }
 }

@@ -6,12 +6,16 @@ import { AntDesign } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Text } from "react-native-ui-lib";
 import { useAtomValue } from "jotai";
+import { useState } from "react";
 
+import FontSizeModal from "~components/modal/FontSizeModal";
 import { DarkThemeAtom } from "~atoms/darkTheme";
 import { fontSizeAtom } from "~atoms/fontSize";
 
 export default function Settings() {
   const isDarkTheme = useAtomValue(DarkThemeAtom);
+
+  const [isVisible, setIsVisible] = useState(false);
 
   const { t } = useTranslation();
   const router = useRouter();
@@ -31,8 +35,11 @@ export default function Settings() {
     },
     {
       name: `${t("FontSize")}`,
+      // onPress: () => {
+      //   router.push("/home/settings/fontSize");
+      // },
       onPress: () => {
-        router.push("/home/settings/fontSize");
+        setIsVisible(true);
       },
     },
     {
@@ -47,31 +54,26 @@ export default function Settings() {
     },
     {
       name: `${t("SignOut")}`,
+
       onPress: () => {
         AsyncStorage.removeItem("accessToken");
         router.replace("/(auth)/sign-in");
       },
     },
   ];
-  console.log(fontSizeData);
+
   return (
     <>
+      <FontSizeModal isVisible={isVisible} setIsVisible={setIsVisible} />
+
       <FlatList
         data={settingsList}
         ListFooterComponent={
           <View className="opacity-60 justify-between flex-row border-b-2 py-4 mx-2 border-slate-300 ">
-            <Text
-              textColor
-              className={`ml-4 text-${
-                fontSizeData + (fontSizeData === 2 ? 2 : 1)
-              }xl`}
-            >{`${t("Build")}`}</Text>
-            <Text
-              textColor
-              className={`mr-4 text-${
-                fontSizeData + (fontSizeData === 2 ? 2 : 1)
-              }xl`}
-            >
+            <Text textColor className={`ml-4 text-${fontSizeData + 1}xl`}>{`${t(
+              "Build"
+            )}`}</Text>
+            <Text textColor className={`mr-4 text-${fontSizeData + 1}xl `}>
               v 1.0.0
             </Text>
           </View>
@@ -81,12 +83,7 @@ export default function Settings() {
             onPress={item.onPress}
             className="justify-between flex-row border-b-2 py-4 mx-2 border-slate-300"
           >
-            <Text
-              textColor
-              className={`ml-4 text-${
-                fontSizeData + (fontSizeData === 2 ? 2 : 1)
-              }xl dark:text-white`}
-            >
+            <Text textColor className={`ml-4 text-${fontSizeData + 1}xl`}>
               {item.name}
             </Text>
             <View className="mr-4">

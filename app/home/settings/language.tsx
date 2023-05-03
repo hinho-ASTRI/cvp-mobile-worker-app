@@ -24,9 +24,7 @@ export default function Language() {
         >
           <Text
             textColor
-            className={`ml-4 text-${
-              fontSizeData + (fontSizeData === 2 ? 2 : 1)
-            }xl text-start`}
+            className={`ml-4 text-${fontSizeData + 1}xl text-start`}
           >
             {item}
           </Text>

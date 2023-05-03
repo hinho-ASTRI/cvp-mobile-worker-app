@@ -1,8 +1,19 @@
 import { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  Dimensions,
+  Alert,
+} from "react-native";
+import { useTranslation } from "react-i18next";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import BarcodeMask from "react-native-barcode-mask";
 
+const { width } = Dimensions.get("window");
 export default function BarCodeScan() {
+  const { t } = useTranslation();
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -11,16 +22,20 @@ export default function BarCodeScan() {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     };
-
     getBarCodeScannerPermissions();
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    console.log(data);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    console.log("Scanner data:", data);
+    Alert.alert(
+      `${t("ScannedResult")}`,
+      `\n${t("UsernamePlaceholder")}: ${data}`,
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+    );
   };
 
+  // TODO: translation
   if (hasPermission === null) {
     return (
       <View className="justify-center items-center">
@@ -37,9 +52,14 @@ export default function BarCodeScan() {
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
-      />
+      >
+        <BarcodeMask width={width * 0.8} height={width * 0.8} />
+      </BarCodeScanner>
       {scanned && (
-        <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />
+        <Button
+          title={`${t("TapToScanAgain")}`}
+          onPress={() => setScanned(false)}
+        />
       )}
     </View>
   );

@@ -12,6 +12,8 @@
     "CertId": "證書號碼",
     "Settings": "設定",
     "QRCodeScanner": "二維碼掃描器",
+    "ScannedResult": "掃描結果",
+    "TapToScanAgain": "點擊再次掃描",
     "Language": "語言",
     "SignOut": "登出",
     "AboutCIC": "關於建造業議會",
@@ -21,7 +23,9 @@
     "Default": "標準",
     "Larger": "較大",
     "AdjustFontSize": "調整字體大小",
+    "SampleText": "樣本字體",
     "DarkMode": "深色模式",
-    "LightMode": "淺色模式"
+    "LightMode": "淺色模式",
+    "Profile": "用戶"
   }
 }
