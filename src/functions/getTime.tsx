@@ -9,13 +9,17 @@ const options = {
 const clock = new ntpClient(options);
 
 const getTime = (
-  setTimestamp: Dispatch<React.SetStateAction<number>>,
-  setDateFormat: Dispatch<React.SetStateAction<string>>
+  setTimestamp?: Dispatch<React.SetStateAction<number>>,
+  setDateFormat?: Dispatch<React.SetStateAction<string>>
 ) => {
   // get the current unix timestamp
   const currentTime = clock.getTime();
-  setTimestamp(currentTime);
-  toDate(currentTime, setDateFormat);
+  if (setTimestamp && setDateFormat) {
+    setTimestamp(currentTime);
+    toDate(currentTime, setDateFormat);
+  } else {
+    return currentTime;
+  }
 };
 
 const toDate = (

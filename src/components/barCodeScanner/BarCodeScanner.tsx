@@ -12,6 +12,8 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import BarcodeMask from "react-native-barcode-mask";
 import * as SQLite from "expo-sqlite";
 
+import getTime from "~functions/getTime";
+
 const { width } = Dimensions.get("window");
 const db = SQLite.openDatabase("scanned_cert_data.db");
 interface scanResult {
@@ -60,8 +62,8 @@ export default function BarCodeScan() {
   };
 
   const { t } = useTranslation();
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [scanned, setScanned] = useState<boolean>(false);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -73,11 +75,19 @@ export default function BarCodeScan() {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
+    const currentTime = getTime();
     console.log("Scanner data:", data);
 
     const parsedData = JSON.parse(data) as scanResult;
 
-    if (
+    // QR code checking
+    // Check if the scanned QR code has expired (i.e. produced more than 1 minute ago)
+    console.log((currentTime - parsedData.timeStamp) / 1000);
+    if (currentTime - parsedData.timeStamp > 60000) {
+      Alert.alert("Error", "The QR Code has expired", [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
+    } else if (
       typeof parsedData.id === "string" &&
       typeof parsedData.timeStamp === "number" &&
       typeof parsedData.date === "string"

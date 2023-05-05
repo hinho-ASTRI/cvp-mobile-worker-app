@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-import { TouchableOpacity, View, Text } from "react-native-ui-lib";
+import { View } from "react-native-ui-lib";
 import { FlatList, Button } from "react-native";
 import { useEffect, useState, Dispatch } from "react";
 
@@ -23,8 +23,6 @@ export default function History() {
   const [data, setData] = useState<null | any[]>(null);
 
   useEffect(() => fetchData(db, setData), []);
-  console.log(data);
-
   const clearScannedCertData = async (db) => {
     try {
       if (data) {
