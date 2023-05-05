@@ -74,11 +74,23 @@ export default function BarCodeScan() {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     console.log("Scanner data:", data);
-    insertScannedData(JSON.parse(data));
 
-    Alert.alert(`${t("ScannedResult")}`, `${data}`, [
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]);
+    const parsedData = JSON.parse(data) as scanResult;
+
+    if (
+      typeof parsedData.id === "string" &&
+      typeof parsedData.timeStamp === "number" &&
+      typeof parsedData.date === "string"
+    ) {
+      insertScannedData(parsedData);
+      Alert.alert(`${t("ScannedResult")}`, `${data}`, [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
+    } else {
+      Alert.alert("Error", "Invalid data format", [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
+    }
   };
 
   // TODO: translation

@@ -2,14 +2,8 @@ import * as SQLite from "expo-sqlite";
 import { TouchableOpacity, View, Text } from "react-native-ui-lib";
 import { FlatList, Button } from "react-native";
 import { useEffect, useState, Dispatch } from "react";
-import CertListItem from "~components/cert/CertListItem";
-// const db = SQLite.openDatabase("scanned_cert_data.db");
 
-interface scanResult {
-  id: string;
-  timeStamp: number;
-  date: string;
-}
+import HistoryItem from "~components/history/HistoryItem";
 
 const fetchData = (db, setData: Dispatch<any[]>) => {
   db.transaction((tx) => {
@@ -23,17 +17,6 @@ const fetchData = (db, setData: Dispatch<any[]>) => {
     );
   });
 };
-
-const renderItem = ({ item }) => (
-  <TouchableOpacity
-    bg-screenBG
-    center
-    className="border-[#ccc] my-2 mx-2 p-3.5 rounded border"
-  >
-    <Text textColor>ID: {item.id}</Text>
-    <Text textColor>{item.date}</Text>
-  </TouchableOpacity>
-);
 
 export default function History() {
   const db = SQLite.openDatabase("scanned_cert_data.db");
@@ -59,7 +42,7 @@ export default function History() {
     <View bg-screenBG className=" flex-1 py-4">
       <FlatList
         data={data}
-        renderItem={renderItem}
+        renderItem={(item) => HistoryItem(item)}
         keyExtractor={(item, index) => index.toString()}
       ></FlatList>
 
