@@ -26,6 +26,7 @@
     "SampleText": "样本字体",
     "DarkMode": "深色模式",
     "LightMode": "浅色模式",
-    "Profile": "用戶"
+    "Profile": "用戶",
+    "ScanHistory": "扫描记录"
   }
 }

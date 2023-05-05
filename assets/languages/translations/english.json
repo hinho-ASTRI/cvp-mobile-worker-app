@@ -26,6 +26,7 @@
     "SampleText": "Sample Text",
     "DarkMode": "Dark Mode",
     "LightMode": "Light Mode",
-    "Profile": "Profile"
+    "Profile": "Profile",
+    "ScanHistory": "Scan History"
   }
 }

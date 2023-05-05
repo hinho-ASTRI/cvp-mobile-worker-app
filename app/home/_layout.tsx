@@ -31,6 +31,7 @@ export default function Layout1() {
       <Tabs.Screen
         name="cert"
         options={{
+          href: usernameData === "user" ? "home/" : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <FontAwesome name="home" size={focused ? 28 : 24} color={color} />
@@ -54,6 +55,23 @@ export default function Layout1() {
             </TabBarIcon>
           ),
           headerTitle: `${t("QRCodeScanner")}`,
+        }}
+      />
+
+      <Tabs.Screen
+        name="History"
+        options={{
+          href: usernameData === "admin" ? "home/History" : null,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon focused={focused}>
+              <FontAwesome
+                name="history"
+                size={focused ? 28 : 24}
+                color={color}
+              />
+            </TabBarIcon>
+          ),
+          headerTitle: `${t("ScanHistory")}`,
         }}
       />
 
