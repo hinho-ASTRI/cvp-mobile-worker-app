@@ -17,7 +17,7 @@ type HistoryItemProps = {
 
 const HistoryItem: React.FC<HistoryItemProps> = ({ item }) => {
   const fontSizeData = useAtomValue(fontSizeAtom);
-  console.log(fontSizeAtom);
+
   return (
     <TouchableOpacity
       bg-screenBG

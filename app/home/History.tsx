@@ -5,6 +5,8 @@ import { useEffect, useState, Dispatch } from "react";
 
 import HistoryItem from "~components/history/HistoryItem";
 
+type sortBy = "credential_type" | "issuer";
+
 export interface IHistoryItem {
   UUID: string;
   credential_type: string;
@@ -15,6 +17,9 @@ export interface IHistoryItem {
   timeStamp: number;
 }
 
+let distinctCredential_type: string[];
+let distinctIssuer: string[];
+
 const fetchData = (db, setData: Dispatch<IHistoryItem[]>) => {
   db.transaction((tx) => {
     tx.executeSql(
@@ -23,6 +28,16 @@ const fetchData = (db, setData: Dispatch<IHistoryItem[]>) => {
       (txObj, { rows: { _array } }) => {
         console.log("array");
         setData(_array);
+
+        distinctCredential_type = [
+          ...new Set(_array.map((item: IHistoryItem) => item.credential_type)),
+        ] as string[];
+        console.log(distinctCredential_type);
+
+        distinctIssuer = [
+          ...new Set(_array.map((item: IHistoryItem) => item.issuer)),
+        ] as string[];
+        console.log(distinctIssuer);
       }
     );
   });
@@ -33,6 +48,7 @@ export default function History() {
   const [data, setData] = useState<null | IHistoryItem[]>(null);
 
   useEffect(() => fetchData(db, setData), []);
+
   const clearScannedCertData = async (db) => {
     try {
       if (data) {
@@ -46,8 +62,9 @@ export default function History() {
     }
   };
   console.log(data);
+
   return (
-    <View bg-screenBG className=" flex-1 py-4">
+    <View bg-screenBG className="flex-1 py-4">
       <FlatList
         data={data}
         renderItem={({ item }) => <HistoryItem item={item} />}
