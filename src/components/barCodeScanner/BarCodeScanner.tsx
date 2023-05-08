@@ -11,27 +11,29 @@ import { useTranslation } from "react-i18next";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import BarcodeMask from "react-native-barcode-mask";
 import * as SQLite from "expo-sqlite";
+import { useAtomValue } from "jotai";
 
+import { IHistoryItem } from "app/home/History";
+import { usernameAtom } from "~atoms/username";
 import getTime from "~functions/getTime";
+import getCertDetails from "~functions/getCertDetails";
+import { accessTokenAtom } from "~atoms/accessToken";
 
 const { width } = Dimensions.get("window");
 const db = SQLite.openDatabase("scanned_cert_data.db");
-interface scanResult {
-  id: string;
-  timeStamp: number;
-  date: string;
-}
 
 export default function BarCodeScan() {
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
-        "create table if not exists scanned_cert_data (index_id INTEGER PRIMARY KEY AUTOINCREMENT, id INTEGER, timeStamp INTEGER, date text);"
+        "create table if not exists scanned_cert_data (index_id INTEGER PRIMARY KEY AUTOINCREMENT, UUID INTEGER, timeStamp INTEGER, credential_type text, end_date text, issuer text, scanned_date text,start_date text);"
       );
     });
   }, []);
+  const username = useAtomValue(usernameAtom);
+  const accessToken = useAtomValue(accessTokenAtom);
 
-  const insertScannedData = (data: scanResult) => {
+  const insertScannedData = (data: IHistoryItem) => {
     db.transaction((tx) => {
       // Check the number of rows
       tx.executeSql(
@@ -54,8 +56,16 @@ export default function BarCodeScan() {
 
       // Insert the new data
       tx.executeSql(
-        "INSERT INTO scanned_cert_data (id, timeStamp, date) VALUES (?, ?, ?)",
-        [data.id, data.timeStamp, data.date],
+        "INSERT INTO scanned_cert_data (UUID, credential_type, end_date, issuer , scanned_date , start_date, timeStamp ) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [
+          data.UUID,
+          data.credential_type,
+          data.end_date,
+          data.issuer,
+          data.scanned_date,
+          data.start_date,
+          data.timeStamp,
+        ],
         (_, result) => console.log("Data inserted successfully")
       );
     });
@@ -73,13 +83,15 @@ export default function BarCodeScan() {
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    const currentTime = getTime();
-    console.log("Scanner data:", data);
+    const timeObj = getTime();
+    const currentTime = timeObj.currentTime;
 
-    const parsedData = JSON.parse(data) as scanResult;
+    console.log("Scanned data:", data);
 
+    const parsedData = JSON.parse(data);
+    // const parsedData = JSON.parse(data) as scanResult;
     // QR code checking
     // Check if the scanned QR code has expired (i.e. produced more than 1 minute ago)
     console.log((currentTime - parsedData.timeStamp) / 1000);
@@ -88,14 +100,40 @@ export default function BarCodeScan() {
         { text: "OK", onPress: () => console.log("OK Pressed") },
       ]);
     } else if (
-      typeof parsedData.id === "string" &&
+      typeof parsedData.UUID === "string" &&
       typeof parsedData.timeStamp === "number" &&
       typeof parsedData.date === "string"
     ) {
-      insertScannedData(parsedData);
-      Alert.alert(`${t("ScannedResult")}`, `${data}`, [
-        { text: "OK", onPress: () => console.log("OK Pressed") },
-      ]);
+      // insertScannedData(parsedData);
+      // const items = getCertDetails(username, parsedData.UUID, accessToken);
+      const fetchData = async () => {
+        try {
+          const data = await getCertDetails(
+            username,
+            parsedData.UUID,
+            accessToken
+          );
+          if (data) {
+            // Alert.alert(`${t("ScannedResult")}`, `${JSON.stringify(data[0])}`, [
+            //   { text: "OK", onPress: () => console.log("OK Pressed") },
+            // ]);
+
+            const iData = data[0] as IHistoryItem;
+
+            const combinedData = {
+              ...iData,
+              scanned_date: timeObj.date,
+              timestamp: currentTime,
+            };
+            console.log("combinedData", combinedData);
+            insertScannedData(combinedData);
+          }
+        } catch (e) {
+          console.log("error:", e);
+        }
+      };
+      fetchData();
+      console.log("scanned", data);
     } else {
       Alert.alert("Error", "Invalid data format", [
         { text: "OK", onPress: () => console.log("OK Pressed") },

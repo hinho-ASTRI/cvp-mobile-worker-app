@@ -20,6 +20,7 @@ import { DarkThemeAtom } from "~atoms/darkTheme";
 import { isLoggedInAtom } from "~atoms/isLoggedIn";
 import { fontSizeAtom } from "~atoms/fontSize";
 import { usernameAtom } from "~atoms/username";
+import { accessTokenAtom } from "~atoms/accessToken";
 
 // FOR TRANSLATION
 import i18next from "./assets/languages/i18n-js";
@@ -32,6 +33,7 @@ Colors.loadSchemes(colorsTheme);
 export function App() {
   const [isDarkTheme, setIsDarkTheme] = useAtom(DarkThemeAtom);
   const setUsernameData = useSetAtom(usernameAtom);
+  const setAccessTokenAtom = useSetAtom(accessTokenAtom);
 
   const ctx = require.context("./app");
   const { i18n } = useTranslation();
@@ -40,7 +42,7 @@ export function App() {
   const setIsLoggedInAtom = useSetAtom(isLoggedInAtom);
 
   useEffect(() => {
-    getAccessToken(setIsLoggedInAtom);
+    getAccessToken(setIsLoggedInAtom, setAccessTokenAtom);
     getFontSizeData(setFontSizeData);
     getLanguageData(i18n);
     getIsDarkMode(setIsDarkTheme, setTheme);

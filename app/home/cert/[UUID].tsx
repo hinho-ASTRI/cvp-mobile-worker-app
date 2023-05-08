@@ -6,12 +6,13 @@ import CertListItemDetails from "~components/cert/CertListItemDetails";
 
 const CertListID: React.FC = () => {
   const params = useSearchParams();
-  const id = params.id as string;
-  console.log(id);
+  const UUID = params.UUID as string;
+
+  console.log(UUID);
   return (
     <View className="justify-center items-center">
-      <CertListItemDetails id={id} />
-      <QrCode size={200} value={{ id: id }} />
+      {/* <CertListItemDetails id={id} /> */}
+      <QrCode size={200} value={{ UUID }} />
     </View>
   );
 };

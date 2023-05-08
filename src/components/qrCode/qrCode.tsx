@@ -8,7 +8,7 @@ import { DarkThemeAtom } from "~atoms/darkTheme";
 
 type QrCodeProps = {
   size: number;
-  value: { username: string } | { id: string };
+  value: { username: string } | { UUID: string };
 };
 
 export const QrCode: React.FC<QrCodeProps> = ({ size, value }) => {
@@ -24,13 +24,17 @@ export const QrCode: React.FC<QrCodeProps> = ({ size, value }) => {
     }, 30000); // Refresh every 30 seconds
     return () => clearInterval(interval);
   }, []);
-
+  console.log(value);
+  let CIC_logo_icon = require("../../../assets/icon/CIC_logo_icon.png");
   return (
     <View className="my-4">
       <QRCode
         backgroundColor={isDarkTheme ? "black" : "white"}
         color={isDarkTheme ? "white" : "black"}
         size={size}
+        logoBackgroundColor={isDarkTheme ? "black" : "white"}
+        logoSize={50}
+        logo={CIC_logo_icon}
         value={JSON.stringify({
           ...value,
           timeStamp: timeStamp,

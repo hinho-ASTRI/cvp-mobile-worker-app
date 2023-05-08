@@ -14,6 +14,8 @@ import DismissKeyboard from "~components/DismissKeyboard";
 import CustomInput from "~components/CustomInput";
 import CustomButton from "~components/buttons/CustomButton";
 
+import { accessTokenAtom } from "~atoms/accessToken";
+
 export default function SignIn() {
   const { t } = useTranslation();
 
@@ -21,6 +23,7 @@ export default function SignIn() {
 
   // const [isBiometricSupported, setIsBiometricSupported] = useState(false);
   const setUsernameData = useSetAtom(usernameAtom);
+  const setAccessToken = useSetAtom(accessTokenAtom);
   // Check if hardware supports biometrics
   // useEffect(() => {
   //   (async () => {
@@ -71,6 +74,8 @@ export default function SignIn() {
         // store tokens in AsyncStorage
         // AsyncStorage.setItem("accessToken", data.token);
         AsyncStorage.setItem("accessToken", data);
+        setAccessToken(data);
+        console.log(data);
         AsyncStorage.setItem("username", username);
         setUsernameData(username);
         // redirect to MainScreen

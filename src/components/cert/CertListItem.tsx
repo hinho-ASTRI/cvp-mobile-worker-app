@@ -16,7 +16,7 @@ const certListItem = ({ item }: { item: ListItem }) => {
       className="border-[#ccc] my-2 mx-2 p-1.5 rounded border"
       onPress={() => {
         router.push({
-          pathname: `/home/cert/${item.id}`,
+          pathname: `/home/cert/${item.value}`,
         });
         console.log(item.id);
       }}

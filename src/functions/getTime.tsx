@@ -18,17 +18,23 @@ const getTime = (
     setTimestamp(currentTime);
     toDate(currentTime, setDateFormat);
   } else {
-    return currentTime;
+    return {
+      currentTime,
+      date: toDate(currentTime),
+    };
   }
 };
 
-const toDate = (
+export const toDate = (
   unixTimestamp: number,
-  setDateFormat: Dispatch<React.SetStateAction<string>>
+  setDateFormat?: Dispatch<React.SetStateAction<string>>
 ) => {
   const dateObject = new Date(unixTimestamp);
   console.log(dateObject.toLocaleString("en-GB", { hour12: false }));
-  setDateFormat(dateObject.toLocaleString("en-GB", { hour12: false }));
+  if (setDateFormat) {
+    setDateFormat(dateObject.toLocaleString("en-GB", { hour12: false }));
+  }
+  return dateObject.toLocaleString("en-GB", { hour12: false });
 };
 
 export default getTime;

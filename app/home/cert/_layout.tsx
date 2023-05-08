@@ -24,7 +24,10 @@ export default function Layout() {
         options={{ headerTitle: `${t("CertList")}` }}
       />
       <Stack.Screen name="CertListPage" />
-      <Stack.Screen name="[id]" options={{ headerTitle: `${t("CertInfo")}` }} />
+      <Stack.Screen
+        name="[UUID]"
+        options={{ headerTitle: `${t("CertInfo")}` }}
+      />
     </Stack>
   );
 }

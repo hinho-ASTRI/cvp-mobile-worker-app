@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons/";
-import { MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons, AntDesign } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useAtomValue } from "jotai";
 
@@ -76,6 +76,23 @@ export default function Layout1() {
       />
 
       <Tabs.Screen
+        name="Add"
+        options={{
+          href: usernameData === "user" ? "home/Add" : null,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon focused={focused}>
+              <AntDesign
+                name="addfile"
+                size={focused ? 28 : 24}
+                color={color}
+              />
+            </TabBarIcon>
+          ),
+          headerTitle: "Add",
+        }}
+      />
+
+      <Tabs.Screen
         name="Profile"
         options={{
           href: usernameData === "user" ? "home/Profile" : null,
@@ -87,6 +104,7 @@ export default function Layout1() {
           headerTitle: `${t("Profile")}`,
         }}
       />
+
       <Tabs.Screen
         name="settings"
         options={{
