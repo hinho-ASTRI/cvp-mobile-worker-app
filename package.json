@@ -34,6 +34,7 @@
     "i18n-js": "^4.2.3",
     "i18next": "^22.4.14",
     "jotai": "^2.0.2",
+    "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "nativewind": "^2.0.11",
     "react": "18.2.0",

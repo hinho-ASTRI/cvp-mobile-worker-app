@@ -93,19 +93,6 @@ export default function Layout1() {
       />
 
       <Tabs.Screen
-        name="Profile"
-        options={{
-          href: usernameData === "user" ? "home/Profile" : null,
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon focused={focused}>
-              <FontAwesome name="user" size={focused ? 28 : 24} color={color} />
-            </TabBarIcon>
-          ),
-          headerTitle: `${t("Profile")}`,
-        }}
-      />
-
-      <Tabs.Screen
         name="settings"
         options={{
           tabBarIcon: ({ color, focused }) => (
@@ -118,6 +105,19 @@ export default function Layout1() {
             </TabBarIcon>
           ),
           headerShown: false,
+        }}
+      />
+
+      <Tabs.Screen
+        name="Profile"
+        options={{
+          href: usernameData === "user" ? "home/Profile" : null,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon focused={focused}>
+              <FontAwesome name="user" size={focused ? 28 : 24} color={color} />
+            </TabBarIcon>
+          ),
+          headerTitle: `${t("Profile")}`,
         }}
       />
     </Tabs>

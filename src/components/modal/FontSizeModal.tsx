@@ -18,14 +18,6 @@ type FontSizeModalProps = {
 export const FontSizeModal: React.FC<FontSizeModalProps> = (props) => {
   const { t } = useTranslation();
 
-  const getFontSizeData = async () => {
-    const fontSize = await AsyncStorage.getItem("fontSize");
-    if (fontSize !== null) {
-      const appFontSize = parseInt(fontSize);
-      setStoredValue(appFontSize);
-      setFontSizeData(appFontSize);
-    }
-  };
   const isDarkTheme = useAtomValue(DarkThemeAtom);
   const [storedValue, setStoredValue] = useState<null | number>(null);
   const [valueInModal, setValue] = useState<number>(storedValue ?? 1);
@@ -35,11 +27,11 @@ export const FontSizeModal: React.FC<FontSizeModalProps> = (props) => {
   const valueChangeHandler: (fontSize: number) => void = (fontSize) => {
     setValue(fontSize);
     setTempFontSize(fontSize);
-    // setFontSizeData(fontSize);
   };
 
   return (
     <Modal
+      justifyContent={"flex-end"}
       isVisible={props.isVisible}
       onBackdropPress={() => {
         props.setIsVisible(false);

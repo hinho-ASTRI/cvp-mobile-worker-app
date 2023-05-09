@@ -32,11 +32,6 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
-        name="fontSize"
-        options={{ headerTitle: `${t("FontSize")}` }}
-      />
-
-      <Stack.Screen
         name="theme"
         options={{
           headerTitle: `${t("DarkMode")}`,

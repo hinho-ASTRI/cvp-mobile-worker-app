@@ -6,21 +6,35 @@ type ModalProps = {
   isVisible: boolean;
   children: React.ReactNode;
   [x: string]: any;
+  justifyContent?:
+    | "center"
+    | "flex-start"
+    | "flex-end"
+    | "space-between"
+    | "space-around"
+    | "space-evenly";
+  animationIn?: "slideInUp" | "slideInDown";
+  animationOut?: "slideOutUp" | "slideOutDown";
 };
 
 export const Modal = ({
   isVisible = false,
   children,
+  justifyContent,
+  animationIn,
+  animationOut,
   ...props
 }: ModalProps) => {
   return (
     <RNModal
       style={{
         margin: 0,
-        justifyContent: "flex-end",
+        justifyContent,
       }}
       isVisible={isVisible}
       animationInTiming={1000}
+      animationIn={animationIn}
+      animationOut={animationOut}
       animationOutTiming={1000}
       backdropTransitionInTiming={800}
       backdropTransitionOutTiming={800}
