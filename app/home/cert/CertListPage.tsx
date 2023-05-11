@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import { useAtomValue } from "jotai";
 
 import { usernameAtom } from "~atoms/username";
-import getCertIds from "~functions/getCertIds";
+import getCertIds from "~functions/api/cert/getCertIds";
 // import { ListItem } from "~functions/getCertIds";
 import CertList from "~components/cert/CertList";
 

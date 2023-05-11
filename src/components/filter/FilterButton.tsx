@@ -1,6 +1,7 @@
 import { View, Button } from "react-native-ui-lib";
 import { AntDesign } from "@expo/vector-icons";
 import { Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 
 type FilterButtonProps = {
   isDown: boolean;
@@ -15,10 +16,12 @@ const FilterButton: React.FC<FilterButtonProps> = ({
   setIsVisible,
   isVisible,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Button
       backgroundColor={"#080707"}
-      label={"Filters"}
+      label={`${t("Filter")}`}
       color={"#fff"}
       iconOnRight
       iconSource={() => (

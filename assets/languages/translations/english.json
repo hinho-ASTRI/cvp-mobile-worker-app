@@ -27,6 +27,11 @@
     "DarkMode": "Dark Mode",
     "LightMode": "Light Mode",
     "Profile": "Profile",
-    "ScanHistory": "Scan History"
+    "ScanHistory": "Scan History",
+    "Filter": "Filter",
+    "Result": "Result",
+    "Results": "Results",
+    "No": "No",
+    "ClearAllData": "Clear All Data"
   }
 }

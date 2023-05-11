@@ -5,14 +5,6 @@ import { useTranslation } from "react-i18next";
 import QrCode from "~components/qrCode/qrCode";
 import { usernameAtom } from "~atoms/username";
 
-export type ProfileModal = {
-  extra: string;
-  gender: string;
-  hkid: string;
-  id: string;
-  name: string;
-};
-
 export default function Profile() {
   const { t } = useTranslation();
   const usernameData = useAtomValue(usernameAtom);

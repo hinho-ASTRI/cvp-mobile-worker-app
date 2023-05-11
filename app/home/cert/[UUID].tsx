@@ -2,7 +2,6 @@ import { useSearchParams } from "expo-router";
 import { View } from "react-native";
 
 import QrCode from "~components/qrCode/qrCode";
-import CertListItemDetails from "~components/cert/CertListItemDetails";
 
 const CertListID: React.FC = () => {
   const params = useSearchParams();
@@ -12,7 +11,7 @@ const CertListID: React.FC = () => {
   return (
     <View className="justify-center items-center">
       {/* <CertListItemDetails id={id} /> */}
-      <QrCode size={200} value={{ UUID }} />
+      <QrCode size={250} value={{ UUID }} />
     </View>
   );
 };

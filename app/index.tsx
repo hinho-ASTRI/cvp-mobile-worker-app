@@ -13,7 +13,7 @@ export default function Entry() {
     <Redirect
       href={
         isLoggedIn
-          ? username === "user"
+          ? username === "user" || username === "W000001"
             ? "/home/cert"
             : "/home/BarCodeScanner"
           : "/(auth)/sign-in"

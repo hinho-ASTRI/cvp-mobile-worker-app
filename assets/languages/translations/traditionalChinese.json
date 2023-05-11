@@ -27,6 +27,11 @@
     "DarkMode": "深色模式",
     "LightMode": "淺色模式",
     "Profile": "用戶",
-    "ScanHistory": "掃描記錄"
+    "ScanHistory": "掃描記錄",
+    "Filter": "篩選",
+    "Result": "結果",
+    "Results": "結果",
+    "No": "没有",
+    "ClearAllData": "清除所有記錄"
   }
 }

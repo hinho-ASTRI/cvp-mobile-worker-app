@@ -3,6 +3,7 @@ import { View, Text } from "react-native-ui-lib";
 import { FlatList, Button } from "react-native";
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
+import { useTranslation } from "react-i18next";
 
 import FilterButton from "~components/filter/FilterButton";
 import { item } from "~components/filter/Filter";
@@ -24,6 +25,8 @@ export interface IHistoryItem {
 }
 
 export default function History() {
+  const { t } = useTranslation();
+
   const db = SQLite.openDatabase("scanned_cert_data.db");
 
   const fontSizeData = useAtomValue(fontSizeAtom);
@@ -151,17 +154,17 @@ export default function History() {
       >
         <Text textColor className={`text-${fontSizeData + 1}xl`}>
           {selectedButtons.length === 0
-            ? "No"
+            ? `${t("No")}`
             : numberOfSelectedData
             ? numberOfSelectedData
             : numberOfResults
             ? numberOfResults
-            : "No"}{" "}
-          {selectedButtons.length === 0 || numberOfResults === 0
-            ? "Result"
+            : `${t("No")}`}{" "}
+          {selectedButtons.length === 0 || numberOfResults <= 1
+            ? `${t("Result")}`
             : numberOfSelectedData && numberOfSelectedData <= 1
-            ? "Result"
-            : "Results"}
+            ? `${t("Result")}`
+            : `${t("Results")}`}
         </Text>
         <FilterButton
           isDown={isDown}
@@ -184,7 +187,7 @@ export default function History() {
         keyExtractor={(item, index) => index.toString()}
       ></FlatList>
       <Button
-        title="Clear Scanned Cert Data"
+        title={`${t("ClearAllData")}`}
         onPress={() => clearScannedCertData()}
       />
     </View>

@@ -27,6 +27,11 @@
     "DarkMode": "深色模式",
     "LightMode": "浅色模式",
     "Profile": "用戶",
-    "ScanHistory": "扫描记录"
+    "ScanHistory": "扫描记录",
+    "Filter": "筛选",
+    "Result": "结果",
+    "Results": "结果",
+    "No": "没有",
+    "ClearAllData": "清除所有记录"
   }
 }

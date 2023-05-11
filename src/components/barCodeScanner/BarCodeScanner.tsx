@@ -15,8 +15,11 @@ import { useAtomValue } from "jotai";
 import Ajv from "ajv";
 import { JTDDataType } from "ajv/dist/core";
 
+import { CertDetailsFields } from "~functions/api/cert/getCertDetails";
+import { WorkerModal } from "~functions/api/worker/getWorkerDetails";
 import getTime from "~functions/getTime";
-import getCertDetails from "~functions/getCertDetails";
+import getWorkerDetails from "~functions/api/worker/getWorkerDetails";
+import getCertDetails from "~functions/api/cert/getCertDetails";
 import { accessTokenAtom } from "~atoms/accessToken";
 
 const { width } = Dimensions.get("window");
@@ -50,22 +53,19 @@ const ScannedWorkerFieldSchema = {
 type ScannedCertField = JTDDataType<typeof ScannedCertFieldSchema>;
 type ScannedWorkerField = JTDDataType<typeof ScannedWorkerFieldSchema>;
 
-const validateScannedCert = ajv.compile<ScannedWorkerField>(
+const validateScannedCert = ajv.compile<ScannedCertField>(
   ScannedCertFieldSchema
 );
 const validateScannerUser = ajv1.compile<ScannedWorkerField>(
   ScannedWorkerFieldSchema
 );
 
-export type InsertCertField = {
-  UUID: string;
-  credential_type: string;
-  end_date: string;
-  extra: string;
-  is_valid: boolean;
-  issuer: string;
-  start_date: string;
-  worker_signature: string;
+type InsertCertField = CertDetailsFields & {
+  scanned_date: string;
+  timeStamp: number;
+};
+
+type InsertWorkerField = WorkerModal & {
   scanned_date: string;
   timeStamp: number;
 };
@@ -173,7 +173,8 @@ export default function BarCodeScan() {
         { text: "OK", onPress: () => console.log("OK Pressed") },
       ]);
     } else if (validateScannedCert(parsedData)) {
-      if (currentTime - parsedData.timeStamp > 60000) {
+      const timeStamp = parsedData.timeStamp as number;
+      if (currentTime - timeStamp > 60000) {
         Alert.alert("Error", "The QR Code has expired", [
           { text: "OK", onPress: () => console.log("OK Pressed") },
         ]);
@@ -201,14 +202,32 @@ export default function BarCodeScan() {
       fetchData();
       console.log("scanned", data);
     } else if (validateScannerUser(parsedData)) {
-      if (currentTime - parsedData.timeStamp > 60000) {
+      const timeStamp = parsedData.timeStamp as number;
+      if (currentTime - timeStamp > 60000) {
         Alert.alert("Error", "The QR Code has expired", [
           { text: "OK", onPress: () => console.log("OK Pressed") },
         ]);
       }
-      Alert.alert(`${t("ScannedResult")}`, "It is a username", [
-        { text: "OK", onPress: () => console.log("OK Pressed") },
-      ]);
+      const fetchData = async () => {
+        try {
+          const data = await getWorkerDetails(parsedData.username, accessToken);
+          if (data) {
+            Alert.alert(`${t("ScannedResult")}`, `${JSON.stringify(data)}`, [
+              { text: "OK", onPress: () => console.log("OK Pressed") },
+            ]);
+            const combinedData: InsertWorkerField = {
+              ...data,
+              scanned_date: timeObj.date,
+              timeStamp: currentTime,
+            };
+            console.log("combinedData", combinedData);
+          }
+        } catch (e) {
+          console.log("error:", e);
+        }
+      };
+      fetchData();
+      console.log("scanned", data);
     } else {
       Alert.alert("Error", "Invalid data format", [
         { text: "OK", onPress: () => console.log("OK Pressed") },

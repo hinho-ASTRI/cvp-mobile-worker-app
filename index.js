@@ -10,12 +10,12 @@ import { StatusBar } from "expo-status-bar";
 import { useSetAtom, useAtom } from "jotai";
 
 import colorsTheme from "assets/colors/colorsTheme";
-import getUsername from "~functions/getUsername";
-import getAccessToken from "~functions/getAccessToken";
+import getUsername from "~functions/storage/getUsername";
+import getAccessToken from "~functions/storage/getAccessToken";
 import setTheme from "~functions/setTheme";
-import getFontSizeData from "~functions/getFontSizeData";
-import getLanguageData from "~functions/getLanguageData";
-import getIsDarkMode from "~functions/getIsDarkMode";
+import getFontSizeData from "~functions/storage/getFontSizeData";
+import getLanguageData from "~functions/storage/getLanguageData";
+import getIsDarkMode from "~functions/storage/getIsDarkMode";
 import { DarkThemeAtom } from "~atoms/darkTheme";
 import { isLoggedInAtom } from "~atoms/isLoggedIn";
 import { fontSizeAtom } from "~atoms/fontSize";
