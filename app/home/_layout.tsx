@@ -64,6 +64,7 @@ export default function Layout1() {
       <Tabs.Screen
         name="history"
         options={{
+          href: usernameData === "admin" ? "home/" : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <FontAwesome
