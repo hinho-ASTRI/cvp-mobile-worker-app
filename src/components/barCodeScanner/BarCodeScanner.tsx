@@ -183,9 +183,11 @@ export default function BarCodeScan() {
         try {
           const data = await getCertDetails(parsedData.UUID, accessToken);
           if (data) {
-            Alert.alert(`${t("ScannedResult")}`, `${JSON.stringify(data)}`, [
-              { text: "OK", onPress: () => console.log("OK Pressed") },
-            ]);
+            Alert.alert(
+              `${t("ScannedResult")}`,
+              `UUID: ${data.UUID}\n Credential Type: ${data.credential_type}\n Start Date: ${data.start_date}\n End Date: ${data.end_date}\n Is Valid: ${data.is_valid}\n Issuer: ${data.issuer}`,
+              [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+            );
             const combinedData: InsertCertField = {
               ...data,
               scanned_date: timeObj.date,
@@ -212,9 +214,11 @@ export default function BarCodeScan() {
         try {
           const data = await getWorkerDetails(parsedData.username, accessToken);
           if (data) {
-            Alert.alert(`${t("ScannedResult")}`, `${JSON.stringify(data)}`, [
-              { text: "OK", onPress: () => console.log("OK Pressed") },
-            ]);
+            Alert.alert(
+              `${t("ScannedResult")}`,
+              `ID: ${data.id}\n Name: ${data.name}\n Gender: ${data.gender}\n HKID: ${data.hkid}`,
+              [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+            );
             const combinedData: InsertWorkerField = {
               ...data,
               scanned_date: timeObj.date,

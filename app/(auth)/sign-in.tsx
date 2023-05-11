@@ -56,7 +56,8 @@ export default function SignIn() {
     password
   ) => {
     // fetch("http://localhost:8080/login", {
-    fetch("http://192.168.2.100:8081/auth/", {
+    // fetch("http://192.168.2.100:8081/auth/", {
+    fetch("http://192.168.1.12:8081/auth/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
