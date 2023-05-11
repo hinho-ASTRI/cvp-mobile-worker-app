@@ -12,6 +12,8 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import BarcodeMask from "react-native-barcode-mask";
 import * as SQLite from "expo-sqlite";
 import { useAtomValue } from "jotai";
+import Ajv from "ajv";
+import { JTDDataType } from "ajv/dist/core";
 
 import getTime from "~functions/getTime";
 import getCertDetails from "~functions/getCertDetails";
@@ -19,6 +21,41 @@ import { accessTokenAtom } from "~atoms/accessToken";
 
 const { width } = Dimensions.get("window");
 const db = SQLite.openDatabase("scanned_cert_data.db");
+
+const ajv = new Ajv({ allErrors: true });
+const ajv1 = new Ajv({ allErrors: true });
+
+const ScannedCertFieldSchema = {
+  type: "object",
+  properties: {
+    UUID: { type: "string" },
+    date: { type: "string" },
+    timeStamp: { type: "integer" },
+  },
+  required: ["UUID", "date", "timeStamp"],
+  additionalProperties: false,
+} as const;
+
+const ScannedWorkerFieldSchema = {
+  type: "object",
+  properties: {
+    date: { type: "string" },
+    timeStamp: { type: "integer" },
+    username: { type: "string" },
+  },
+  required: ["date", "timeStamp", "username"],
+  additionalProperties: false,
+} as const;
+
+type ScannedCertField = JTDDataType<typeof ScannedCertFieldSchema>;
+type ScannedWorkerField = JTDDataType<typeof ScannedWorkerFieldSchema>;
+
+const validateScannedCert = ajv.compile<ScannedWorkerField>(
+  ScannedCertFieldSchema
+);
+const validateScannerUser = ajv1.compile<ScannedWorkerField>(
+  ScannedWorkerFieldSchema
+);
 
 export type InsertCertField = {
   UUID: string;
@@ -104,30 +141,43 @@ export default function BarCodeScan() {
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = async ({ type, data }) => {
+  const handleBarCodeScanned = async ({
+    type,
+    data,
+  }: {
+    type: string;
+    data: string;
+  }) => {
     setScanned(true);
     const timeObj = getTime();
     const currentTime = timeObj.currentTime;
 
+    // const parsedData = JSON.parse(data);
+    let parsedData;
+    let isValidJson: boolean = false;
+    try {
+      parsedData = JSON.parse(data);
+      isValidJson = true;
+    } catch (error) {
+      isValidJson = false;
+    }
     console.log("Scanned data:", data);
-
-    const parsedData = JSON.parse(data);
-    console.log(parsedData);
+    console.log("parsedData", parsedData);
 
     // QR code checking
     // Check if the scanned QR code has expired (i.e. produced more than 1 minute ago)
     // console.log((currentTime - parsedData.timeStamp) / 1000);
-    if (currentTime - parsedData.timeStamp > 60000) {
-      Alert.alert("Error", "The QR Code has expired", [
+    if (!isValidJson) {
+      console.log("Scanned data is not a JSON object");
+      Alert.alert("Error", "Invalid data format", [
         { text: "OK", onPress: () => console.log("OK Pressed") },
       ]);
-    } else if (
-      typeof parsedData.UUID === "string" &&
-      typeof parsedData.timeStamp === "number" &&
-      typeof parsedData.date === "string"
-    ) {
-      //   // insertScannedData(parsedData);
-      //   // const items = getCertDetails(username, parsedData.UUID, accessToken);
+    } else if (validateScannedCert(parsedData)) {
+      if (currentTime - parsedData.timeStamp > 60000) {
+        Alert.alert("Error", "The QR Code has expired", [
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ]);
+      }
       const fetchData = async () => {
         try {
           const data = await getCertDetails(parsedData.UUID, accessToken);
@@ -141,7 +191,6 @@ export default function BarCodeScan() {
               timeStamp: currentTime,
             };
             console.log("combinedData", combinedData);
-            // insertScannedData(combinedData);
 
             insertScannedData(combinedData);
           }
@@ -151,6 +200,15 @@ export default function BarCodeScan() {
       };
       fetchData();
       console.log("scanned", data);
+    } else if (validateScannerUser(parsedData)) {
+      if (currentTime - parsedData.timeStamp > 60000) {
+        Alert.alert("Error", "The QR Code has expired", [
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ]);
+      }
+      Alert.alert(`${t("ScannedResult")}`, "It is a username", [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
     } else {
       Alert.alert("Error", "Invalid data format", [
         { text: "OK", onPress: () => console.log("OK Pressed") },
