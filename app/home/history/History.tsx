@@ -45,9 +45,11 @@ export default function History() {
   const [numberOfSelectedData, setNumberOfSelectedData] = useState<
     null | number
   >(null);
-  const [selectedButtons, setSelectedButtons] = useState<any>([]);
+  const [selectedButtons, setSelectedButtons] = useState<any[]>([]);
 
-  const fetchData = () => {
+  const [selectedSort, setSelectedSort] = useState<string>("Date: New to Old");
+
+  const fetchData = (selectedSort: string) => {
     db.transaction((tx) => {
       tx.executeSql(
         "SELECT COUNT(*) as count FROM scanned_cert_data",
@@ -56,7 +58,9 @@ export default function History() {
           // Only stores up 20 results
           setNumberOfResults(_array[0].count);
           tx.executeSql(
-            "SELECT * FROM scanned_cert_data ORDER BY index_id DESC",
+            `SELECT * FROM scanned_cert_data ORDER BY index_id ${
+              selectedSort === "Date: New to Old" ? "DESC" : "ASC"
+            }`,
             null,
             (txObj, { rows: { _array } }) => {
               console.log("array");
@@ -107,7 +111,7 @@ export default function History() {
     });
   };
 
-  useEffect(() => fetchData(), []);
+  useEffect(() => fetchData(selectedSort), [selectedSort]);
 
   const handleFilter = (value: number) => {
     let updatedSelectedButtons = [...selectedButtons];
@@ -138,8 +142,13 @@ export default function History() {
       if (data) {
         db.closeAsync();
         db.deleteAsync();
-        setData(null);
         console.log("Table data cleared successfully");
+        setData(null);
+        setDistinctCredential_type(null);
+        setDistinctIssuer(null);
+        setNumberOfResults(0);
+        setSelectedData([]);
+        setFilter([]);
       }
     } catch (error) {
       console.error("Error clearing table data:", error);
@@ -178,6 +187,8 @@ export default function History() {
           data={filter}
           fontSizeData={fontSizeData}
           onFilter={handleFilter}
+          setSort={setSelectedSort}
+          selectedSort={selectedSort}
           selectedButtons={selectedButtons}
         />
       )}

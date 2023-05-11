@@ -152,8 +152,7 @@ export default function BarCodeScan() {
     const timeObj = getTime();
     const currentTime = timeObj.currentTime;
 
-    // const parsedData = JSON.parse(data);
-    let parsedData;
+    let parsedData: any;
     let isValidJson: boolean = false;
     try {
       parsedData = JSON.parse(data);

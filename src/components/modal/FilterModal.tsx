@@ -21,7 +21,6 @@ export const FilterModal: React.FC<FilterModalProps> = (props) => {
   const [storedValue, setStoredValue] = useState<null | number>(null);
   const [valueInModal, setValue] = useState<number>(storedValue ?? 1);
   const [fontSizeData, setFontSizeData] = useAtom(fontSizeAtom);
-  const [tempFontSize, setTempFontSize] = useState<number>(fontSizeData);
 
   return (
     <Modal
