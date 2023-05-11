@@ -8,9 +8,12 @@ type HistoryItemProps = {
     UUID: string;
     credential_type: string;
     end_date: string;
+    extra: string;
+    is_valid: number;
     issuer: string;
-    scanned_date: string;
     start_date: string;
+    worker_signature: string;
+    scanned_date: string;
     timeStamp: number;
   };
 };

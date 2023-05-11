@@ -79,7 +79,11 @@ export default function SignIn() {
         AsyncStorage.setItem("username", username);
         setUsernameData(username);
         // redirect to MainScreen
-        router.replace("/home/cert");
+        if (username === "user" || username === "W000001") {
+          router.replace("/home/cert");
+        } else if (username === "admin") {
+          router.replace("/home/BarCodeScanner");
+        }
       })
       .catch((error) => {
         console.error(error);

@@ -31,7 +31,10 @@ export default function Layout1() {
       <Tabs.Screen
         name="cert"
         options={{
-          href: usernameData === "user" ? "home/" : null,
+          href:
+            usernameData === "user" || usernameData === "W000001"
+              ? "home/"
+              : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <FontAwesome name="home" size={focused ? 28 : 24} color={color} />
@@ -59,9 +62,8 @@ export default function Layout1() {
       />
 
       <Tabs.Screen
-        name="History"
+        name="history"
         options={{
-          href: usernameData === "admin" ? "home/History" : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <FontAwesome
@@ -71,14 +73,17 @@ export default function Layout1() {
               />
             </TabBarIcon>
           ),
-          headerTitle: `${t("ScanHistory")}`,
+          headerShown: false,
         }}
       />
 
       <Tabs.Screen
         name="Add"
         options={{
-          href: usernameData === "user" ? "home/Add" : null,
+          href:
+            usernameData === "user" || usernameData === "W000001"
+              ? "home/Add"
+              : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <AntDesign
@@ -111,7 +116,10 @@ export default function Layout1() {
       <Tabs.Screen
         name="Profile"
         options={{
-          href: usernameData === "user" ? "home/Profile" : null,
+          href:
+            usernameData === "user" || usernameData === "W000001"
+              ? "home/Profile"
+              : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <FontAwesome name="user" size={focused ? 28 : 24} color={color} />

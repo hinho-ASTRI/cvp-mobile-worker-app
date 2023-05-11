@@ -24,7 +24,7 @@ const Filter: React.FC<FilterProps> = ({
   selectedButtons,
 }) => {
   const isDarkTheme = useAtomValue(DarkThemeAtom);
-
+  // console.log(data, "data");
   return (
     <View className="h-[100%]">
       <FlatList
@@ -35,10 +35,10 @@ const Filter: React.FC<FilterProps> = ({
               {Object.keys(item)}
             </Text>
             <View className="flex-row ">
-              {Object.values(item).map((value, index) => (
+              {Object.values(item)[0].map((value, index) => (
                 <TouchableOpacity
                   key={index}
-                  className={`border-2 rounded-lg items-center justify-center ${
+                  className={`border-2 rounded-lg items-center justify-center mr-2 ${
                     selectedButtons.includes(value)
                       ? ` ${
                           isDarkTheme
@@ -53,7 +53,7 @@ const Filter: React.FC<FilterProps> = ({
                 >
                   <Text
                     textColor
-                    className={`text-${fontSizeData + 1}xl p-4 my-2`}
+                    className={`text-${fontSizeData + 1}xl p-1.5 my`}
                   >
                     {value}
                   </Text>

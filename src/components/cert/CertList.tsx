@@ -1,10 +1,10 @@
 import { FlatList, View } from "react-native";
 
 import CertListItem from "./CertListItem";
-import { ListItem } from "~functions/getCertIds";
+// import { ListItem } from "~functions/getCertIds";
 
 type CertListProprs = {
-  data: ListItem[];
+  data: any[];
 };
 
 const CertList: React.FC<CertListProprs> = ({ data }) => {
