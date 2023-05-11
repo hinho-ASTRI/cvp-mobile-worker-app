@@ -2,7 +2,14 @@
 
 Use [`expo-router`](https://expo.github.io/router) to build native navigation using files in the `app/` directory.
 
-## 🚀 How to use
+## Prerequisite
+
+- Expo SDK version: `48.0.0`
+- Android version: `5+`
+- compileSdkVersion (for Android): `33`
+- iOS version: `13+`
+
+## How to use
 
 `npm start`
 Then press `a` for Android, `i` for iOS
