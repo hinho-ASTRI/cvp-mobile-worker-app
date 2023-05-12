@@ -7,60 +7,30 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
+import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import BarcodeMask from "react-native-barcode-mask";
 import * as SQLite from "expo-sqlite";
 import { useAtomValue } from "jotai";
-import Ajv from "ajv";
-import { JTDDataType } from "ajv/dist/core";
 
+import {
+  validateScannedCert,
+  validateScannerUser,
+} from "~functions/helper/ajv";
+import insertScannedData from "~functions/sqlite/insertScannedData";
 import { CertDetailsFields } from "~functions/api/cert/getCertDetails";
 import { WorkerModal } from "~functions/api/worker/getWorkerDetails";
 import getTime from "~functions/getTime";
 import getWorkerDetails from "~functions/api/worker/getWorkerDetails";
 import getCertDetails from "~functions/api/cert/getCertDetails";
 import { accessTokenAtom } from "~atoms/accessToken";
+import { usernameAtom } from "~atoms/username";
 
 const { width } = Dimensions.get("window");
 const db = SQLite.openDatabase("scanned_cert_data.db");
 
-const ajv = new Ajv({ allErrors: true });
-const ajv1 = new Ajv({ allErrors: true });
-
-const ScannedCertFieldSchema = {
-  type: "object",
-  properties: {
-    UUID: { type: "string" },
-    date: { type: "string" },
-    timeStamp: { type: "integer" },
-  },
-  required: ["UUID", "date", "timeStamp"],
-  additionalProperties: false,
-} as const;
-
-const ScannedWorkerFieldSchema = {
-  type: "object",
-  properties: {
-    date: { type: "string" },
-    timeStamp: { type: "integer" },
-    username: { type: "string" },
-  },
-  required: ["date", "timeStamp", "username"],
-  additionalProperties: false,
-} as const;
-
-type ScannedCertField = JTDDataType<typeof ScannedCertFieldSchema>;
-type ScannedWorkerField = JTDDataType<typeof ScannedWorkerFieldSchema>;
-
-const validateScannedCert = ajv.compile<ScannedCertField>(
-  ScannedCertFieldSchema
-);
-const validateScannerUser = ajv1.compile<ScannedWorkerField>(
-  ScannedWorkerFieldSchema
-);
-
-type InsertCertField = CertDetailsFields & {
+export type InsertCertField = CertDetailsFields & {
   scanned_date: string;
   timeStamp: number;
 };
@@ -71,6 +41,8 @@ type InsertWorkerField = WorkerModal & {
 };
 
 export default function BarCodeScan() {
+  const router = useRouter();
+
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
@@ -79,55 +51,25 @@ export default function BarCodeScan() {
     });
   }, []);
 
+  //check if JWT is valid or not
+  const username = useAtomValue(usernameAtom);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getWorkerDetails(username, accessToken);
+        if (data) {
+          console.log("Fetch data:", data);
+          console.log("Data fetched successfully, JWT is staill valid!");
+        }
+      } catch (e) {
+        console.log("error:", e);
+        router.replace("/(auth)/sign-in");
+      }
+    };
+    fetchData();
+  }, []);
+
   const accessToken = useAtomValue(accessTokenAtom);
-
-  const insertScannedData = (data: InsertCertField) => {
-    console.log("in insert data function", data);
-
-    db.transaction((tx) => {
-      // Check the number of rows
-      tx.executeSql(
-        "SELECT COUNT(*) as count FROM scanned_cert_data",
-        [],
-        (txObj, { rows: { _array } }) => {
-          // Only stores up 20 results
-          if (_array[0].count >= 20) {
-            // Delete the oldest row
-            tx.executeSql(
-              "DELETE FROM scanned_cert_data WHERE index_id = (SELECT MIN(index_id) FROM scanned_cert_data)",
-              [],
-              () => {
-                console.log("Oldest row deleted");
-              }
-            );
-          }
-        }
-      );
-
-      // Insert the new data
-      tx.executeSql(
-        "INSERT INTO scanned_cert_data (UUID, credential_type, end_date, extra, is_valid, issuer ,worker_signature, start_date, scanned_date, timeStamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [
-          data.UUID,
-          data.credential_type,
-          data.end_date,
-          data.extra,
-          //1 for true and 0 for false
-          Number(data.is_valid),
-          data.issuer,
-          data.worker_signature,
-          data.start_date,
-          data.scanned_date,
-          data.timeStamp,
-        ],
-        (_, result) => console.log("Data inserted successfully"),
-        (_, error) => {
-          console.log("Error inserting data:", error);
-          return false;
-        }
-      );
-    });
-  };
 
   const { t } = useTranslation();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -194,7 +136,7 @@ export default function BarCodeScan() {
             };
             console.log("combinedData", combinedData);
 
-            insertScannedData(combinedData);
+            insertScannedData(combinedData, db);
           }
         } catch (e) {
           console.log("error:", e);

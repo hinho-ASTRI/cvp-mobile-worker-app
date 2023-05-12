@@ -5,7 +5,6 @@ import { FontAwesome, Entypo } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import * as LocalAuthentication from "expo-local-authentication";
 import { useSetAtom } from "jotai";
 
 import { usernameAtom } from "~atoms/username";
@@ -21,33 +20,9 @@ export default function SignIn() {
 
   const router = useRouter();
 
-  // const [isBiometricSupported, setIsBiometricSupported] = useState(false);
   const setUsernameData = useSetAtom(usernameAtom);
   const setAccessToken = useSetAtom(accessTokenAtom);
-  // Check if hardware supports biometrics
-  // useEffect(() => {
-  //   (async () => {
-  //     const compatible = await LocalAuthentication.hasHardwareAsync();
-  //     setIsBiometricSupported(compatible);
-  //   })();
-  // });
 
-  // const handleBiometricAuth = async () => {
-  //   const savedBiometrics = await LocalAuthentication.isEnrolledAsync();
-  //   if (!savedBiometrics) {
-  //     return Alert.alert(
-  //       "Biometric record not found",
-  //       "Please verify your identity with your password",
-  //       [{ text: "OK", onPress: () => console.log("OK Pressed") }]
-  //       // () => fallBackToDefaultAuth()
-  //     );
-  //   }
-  //   await LocalAuthentication.authenticateAsync({
-  //     promptMessage: "Login with Biometrics",
-  //     // disableDeviceFallback: true,
-  //   });
-  // };
-  // console.log("isBiometricSupported", isBiometricSupported);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -94,14 +69,13 @@ export default function SignIn() {
         );
       });
   };
-
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <DismissKeyboard>
         <View className="items-center bg-[#d3d3d3] flex-1 ">
           <Image
-            className="w-[250px] sm:w-[300px] h-[15%] mt-[20%] sm:mt-[25%] mb-[5%] sm:mb-[15%]"
+            className={`w-[250px] sm:w-[300px] h-[25%] mt-[15%] sm:mt-[20%] mb-[5%]`}
             resizeMode="contain"
             source={require("../../assets/icon/1024px-CIC_logo.png")}
           ></Image>
@@ -133,18 +107,6 @@ export default function SignIn() {
             fgColor="white"
             flexDir="column"
           />
-
-          {/* {isBiometricSupported && (
-            <CustomButton
-              addStyle={{ width: "70%", flexDirection: "column" }}
-              widthPerct="80%"
-              text="Login with Face ID"
-              onPress={() => handleBiometricAuth()}
-              bgColor="black"
-              fgColor="white"
-              flexDir="column"
-            />
-          )} */}
 
           <Text className="text-black my-2 sm:my-6">{`${t(
             "ForgotPassword"

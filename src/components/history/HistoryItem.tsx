@@ -22,10 +22,13 @@ const HistoryItem: React.FC<HistoryItemProps> = ({ item }) => {
   const fontSizeData = useAtomValue(fontSizeAtom);
 
   return (
+    // red-border = not valid, green-border = valid
     <TouchableOpacity
       bg-screenBG
       center
-      className="border-[#ccc] my-2 mx-2 p-3.5 rounded border"
+      className={`${
+        item.is_valid === 0 ? "border-[#ff0b0b]" : "border-[#24ff07]"
+      } my-2 mx-2 p-3.5 rounded border`}
     >
       <Text textColor className={`text-${fontSizeData + 1}xl`}>
         {item.UUID}

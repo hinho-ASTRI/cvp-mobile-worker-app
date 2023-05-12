@@ -39,7 +39,6 @@ const Filter: React.FC<FilterProps> = ({
             <Text textColor className={`text-${fontSizeData + 2}xl mb-4`}>
               Sort by
             </Text>
-
             <ScrollView horizontal>
               {["Date: New to Old", "Date: Old to New"].map((value, index) => (
                 <TouchableOpacity
@@ -54,7 +53,6 @@ const Filter: React.FC<FilterProps> = ({
                       : "border-slate-300"
                   }`}
                   onPress={() => {
-                    // onFilter(value);
                     setSort(value);
                   }}
                 >

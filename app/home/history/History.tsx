@@ -1,10 +1,12 @@
 import * as SQLite from "expo-sqlite";
-import { View, Text } from "react-native-ui-lib";
+import { View } from "react-native-ui-lib";
 import { FlatList, Button } from "react-native";
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
 import { useTranslation } from "react-i18next";
 
+import fetchScannedData from "~functions/sqlite/fetchScannedData";
+import NumberOfSelectedResults from "~components/filter/NumberOfSelectedResults";
 import FilterButton from "~components/filter/FilterButton";
 import { item } from "~components/filter/Filter";
 import Filter from "~components/filter/Filter";
@@ -46,74 +48,22 @@ export default function History() {
     null | number
   >(null);
   const [selectedButtons, setSelectedButtons] = useState<any[]>([]);
-
+  //sort
   const [selectedSort, setSelectedSort] = useState<string>("Date: New to Old");
 
-  const fetchData = (selectedSort: string) => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "SELECT COUNT(*) as count FROM scanned_cert_data",
-        [],
-        (txObj, { rows: { _array } }) => {
-          // Only stores up 20 results
-          setNumberOfResults(_array[0].count);
-          tx.executeSql(
-            `SELECT * FROM scanned_cert_data ORDER BY index_id ${
-              selectedSort === "Date: New to Old" ? "DESC" : "ASC"
-            }`,
-            null,
-            (txObj, { rows: { _array } }) => {
-              console.log("array");
-              const tempDistinctCredentialType = [
-                ...new Set(
-                  _array.map((item: IHistoryItem) => item.credential_type)
-                ),
-              ].sort();
-              const tempDistinctIssuer = [
-                ...new Set(_array.map((item: IHistoryItem) => item.issuer)),
-              ].sort();
+  useEffect(() => {
+    fetchScannedData(
+      db,
+      setNumberOfResults,
+      setData,
+      setDistinctCredential_type,
+      setDistinctIssuer,
+      setFilter,
+      setSelectedButtons
+    );
+  }, []);
 
-              setData(_array);
-              setDistinctCredential_type(
-                [
-                  ...new Set(
-                    _array.map((item: IHistoryItem) => item.credential_type)
-                  ),
-                ].sort()
-              );
-              console.log(
-                "distinctCredential_type",
-                tempDistinctCredentialType
-              );
-              setDistinctIssuer(
-                [
-                  ...new Set(_array.map((item: IHistoryItem) => item.issuer)),
-                ].sort()
-              );
-              console.log("distinctIssuer", tempDistinctIssuer);
-              if (tempDistinctCredentialType && tempDistinctIssuer) {
-                setFilter([
-                  {
-                    "Credential Type": tempDistinctCredentialType,
-                  } as item,
-                  { Issuer: tempDistinctIssuer } as item,
-                ]);
-
-                setSelectedButtons([
-                  ...tempDistinctCredentialType,
-                  ...tempDistinctIssuer,
-                ]);
-              }
-            }
-          );
-        }
-      );
-    });
-  };
-
-  useEffect(() => fetchData(selectedSort), [selectedSort]);
-
-  const handleFilter = (value: number) => {
+  const handleFilter = (value: string) => {
     let updatedSelectedButtons = [...selectedButtons];
     if (!updatedSelectedButtons.includes(value)) {
       updatedSelectedButtons.push(value);
@@ -130,12 +80,25 @@ export default function History() {
         updatedSelectedButtons.includes(item.issuer) ||
         updatedSelectedButtons.includes(item.credential_type)
     );
+
     setSelectedData(filteredData);
     setNumberOfSelectedData(filteredData.length);
     console.log(filteredData.length);
 
     console.log(numberOfSelectedData);
   };
+
+  const sortSelectedData = (data: IHistoryItem[]) => {
+    let tempSelectedData: IHistoryItem[];
+    if (data) {
+      tempSelectedData = [...data].reverse();
+    }
+    setSelectedData(tempSelectedData);
+  };
+
+  useEffect(() => {
+    sortSelectedData(selectedData ? selectedData : data, selectedSort);
+  }, [selectedSort]);
 
   const clearScannedCertData = async () => {
     try {
@@ -161,20 +124,11 @@ export default function History() {
         bg-screenBG
         className="flex-row border-b-2 border-slate-300 h-[50] justify-between items-center px-4"
       >
-        <Text textColor className={`text-${fontSizeData + 1}xl`}>
-          {selectedButtons.length === 0
-            ? `${t("No")}`
-            : numberOfSelectedData
-            ? numberOfSelectedData
-            : numberOfResults
-            ? numberOfResults
-            : `${t("No")}`}{" "}
-          {selectedButtons.length === 0 || numberOfResults <= 1
-            ? `${t("Result")}`
-            : numberOfSelectedData && numberOfSelectedData <= 1
-            ? `${t("Result")}`
-            : `${t("Results")}`}
-        </Text>
+        <NumberOfSelectedResults
+          selectedButtons={selectedButtons}
+          numberOfSelectedData={numberOfSelectedData}
+          numberOfResults={numberOfResults}
+        />
         <FilterButton
           isDown={isDown}
           setIsDown={setIsDown}
