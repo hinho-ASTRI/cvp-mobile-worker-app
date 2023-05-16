@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 
-import { item } from "~components/filter/Filter";
+import { item } from "~components/filter/history/Filter";
 import { IHistoryItem } from "app/home/history/History";
 
 function fetchScannedData(
@@ -10,7 +10,11 @@ function fetchScannedData(
   setDistinctCredential_type: Dispatch<string[]>,
   setDistinctIssuer: Dispatch<string[]>,
   setFilter: Dispatch<item[]>,
-  setSelectedButtons: Dispatch<any[]>
+  setSelectedButtons: Dispatch<any[]>,
+  selectedValid,
+  setSelectedCred,
+  setSelectedIssuer,
+  setSelectedValidButton
 ): void {
   {
     db.transaction((tx) => {
@@ -24,7 +28,7 @@ function fetchScannedData(
             "SELECT * FROM scanned_cert_data ORDER BY index_id DESC",
             null,
             (txObj, { rows: { _array } }) => {
-              console.log("array");
+              // console.log("array");
               const tempDistinctCredentialType = [
                 ...new Set(
                   _array.map((item: IHistoryItem) => item.credential_type)
@@ -42,16 +46,11 @@ function fetchScannedData(
                   ),
                 ].sort() as string[]
               );
-              console.log(
-                "distinctCredential_type",
-                tempDistinctCredentialType
-              );
               setDistinctIssuer(
                 [
                   ...new Set(_array.map((item: IHistoryItem) => item.issuer)),
                 ].sort() as string[]
               );
-              console.log("distinctIssuer", tempDistinctIssuer);
               if (tempDistinctCredentialType && tempDistinctIssuer) {
                 setFilter([
                   {
@@ -63,7 +62,12 @@ function fetchScannedData(
                 setSelectedButtons([
                   ...tempDistinctCredentialType,
                   ...tempDistinctIssuer,
+                  ...selectedValid,
                 ]);
+
+                setSelectedCred([...tempDistinctCredentialType]);
+                setSelectedIssuer([...tempDistinctIssuer]);
+                setSelectedValidButton([...selectedValid]);
               }
             }
           );

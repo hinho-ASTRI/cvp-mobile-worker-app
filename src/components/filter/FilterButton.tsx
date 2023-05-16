@@ -2,6 +2,9 @@ import { View, Button } from "react-native-ui-lib";
 import { AntDesign } from "@expo/vector-icons";
 import { Dispatch } from "react";
 import { useTranslation } from "react-i18next";
+import { useAtomValue } from "jotai";
+
+import { DarkThemeAtom } from "~atoms/darkTheme";
 
 type FilterButtonProps = {
   isDown: boolean;
@@ -17,20 +20,20 @@ const FilterButton: React.FC<FilterButtonProps> = ({
   isVisible,
 }) => {
   const { t } = useTranslation();
-
+  const isDarkTheme = useAtomValue(DarkThemeAtom);
   return (
     <Button
-      backgroundColor={"#080707"}
+      bg-textColor
       label={`${t("Filter")}`}
-      color={"#fff"}
+      screenBG
       iconOnRight
       iconSource={() => (
         <View className="ml-2">
-          {isDown ? (
-            <AntDesign name="caretdown" size={12} color="white" />
-          ) : (
-            <AntDesign name="caretup" size={12} color="white" />
-          )}
+          <AntDesign
+            name={isDown ? "caretdown" : "caretup"}
+            size={12}
+            color={`${isDarkTheme ? "black" : "white"}`}
+          />
         </View>
       )}
       onPress={() => {

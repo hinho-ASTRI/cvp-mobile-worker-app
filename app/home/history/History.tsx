@@ -2,15 +2,13 @@ import * as SQLite from "expo-sqlite";
 import { View } from "react-native-ui-lib";
 import { FlatList, Button } from "react-native";
 import { useEffect, useState } from "react";
-import { useAtomValue } from "jotai";
 import { useTranslation } from "react-i18next";
 
 import fetchScannedData from "~functions/sqlite/fetchScannedData";
-import NumberOfSelectedResults from "~components/filter/NumberOfSelectedResults";
+import NumberOfSelectedResults from "~components/filter/history/NumberOfSelectedResults";
 import FilterButton from "~components/filter/FilterButton";
-import { item } from "~components/filter/Filter";
-import Filter from "~components/filter/Filter";
-import { fontSizeAtom } from "~atoms/fontSize";
+import { item } from "~components/filter/history/Filter";
+import Filter from "~components/filter/history/Filter";
 import HistoryItem from "~components/history/HistoryItem";
 
 export interface IHistoryItem {
@@ -26,12 +24,17 @@ export interface IHistoryItem {
   timeStamp: number;
 }
 
+type MappingType = {
+  credentialType: string[];
+  issuer: string[];
+  valid: boolean[];
+};
+
 export default function History() {
   const { t } = useTranslation();
 
   const db = SQLite.openDatabase("scanned_cert_data.db");
 
-  const fontSizeData = useAtomValue(fontSizeAtom);
   const [isVisible, setIsVisible] = useState(false);
   const [isDown, setIsDown] = useState<boolean>(true);
   const [data, setData] = useState<null | IHistoryItem[]>(null);
@@ -48,8 +51,17 @@ export default function History() {
     null | number
   >(null);
   const [selectedButtons, setSelectedButtons] = useState<any[]>([]);
+
   //sort
   const [selectedSort, setSelectedSort] = useState<string>("Date: New to Old");
+  const [selectedCred, setSelectedCred] = useState<string[]>([]);
+  const [selectedIssuer, setSelectedIssuer] = useState<string[]>([]);
+  const [selectedValidButton, setSelectedValidButton] = useState<string[]>([]);
+
+  const [selectedValid, setSelectedValid] = useState<string[]>([
+    "Valid",
+    "Not Valid",
+  ]);
 
   useEffect(() => {
     fetchScannedData(
@@ -59,12 +71,54 @@ export default function History() {
       setDistinctCredential_type,
       setDistinctIssuer,
       setFilter,
-      setSelectedButtons
+      setSelectedButtons,
+      selectedValid,
+      setSelectedCred,
+      setSelectedIssuer,
+      setSelectedValidButton
     );
   }, []);
 
   const handleFilter = (value: string) => {
     let updatedSelectedButtons = [...selectedButtons];
+
+    let updatedSelectedIssuer = [...selectedIssuer];
+    let updatedSelectedValidButton = [...selectedValidButton];
+    let updatedSelectedCred = [...selectedCred];
+    if (distinctCredential_type.includes(value)) {
+      console.log(value);
+
+      if (!updatedSelectedCred.includes(value)) {
+        updatedSelectedCred.push(value);
+      } else {
+        updatedSelectedCred = updatedSelectedCred.filter(
+          (item) => item !== value
+        );
+      }
+      setSelectedCred(updatedSelectedCred);
+      console.log("updatedSelectedCred", updatedSelectedCred);
+    }
+
+    if (distinctIssuer.includes(value)) {
+      if (!updatedSelectedIssuer.includes(value)) {
+        updatedSelectedIssuer.push(value);
+      } else {
+        updatedSelectedIssuer = updatedSelectedIssuer.filter(
+          (item) => item !== value
+        );
+      }
+      setSelectedIssuer(updatedSelectedIssuer);
+    }
+    if (["Valid", "Not Valid"].includes(value)) {
+      if (!updatedSelectedValidButton.includes(value)) {
+        updatedSelectedValidButton.push(value);
+      } else {
+        updatedSelectedValidButton = updatedSelectedValidButton.filter(
+          (item) => item !== value
+        );
+      }
+      setSelectedValidButton(updatedSelectedValidButton);
+    }
     if (!updatedSelectedButtons.includes(value)) {
       updatedSelectedButtons.push(value);
     } else {
@@ -74,20 +128,81 @@ export default function History() {
     }
     // The pressed filter button
     setSelectedButtons(updatedSelectedButtons);
-    console.log(updatedSelectedButtons, "updatedSelectedButtons");
+    // console.log(updatedSelectedButtons, "updatedSelectedButtons");
     const filteredData = data.filter(
       (item) =>
-        updatedSelectedButtons.includes(item.issuer) ||
-        updatedSelectedButtons.includes(item.credential_type)
+        // updatedSelectedButtons.includes(item.issuer) ||
+        // updatedSelectedButtons.includes(item.credential_type) ||
+        // updatedSelectedButtons.includes(
+        //   item.is_valid === 0 ? "Not Valid" : "Valid"
+        // )
+        (updatedSelectedCred.length === 0 ||
+          updatedSelectedCred.includes(item.credential_type)) &&
+        (updatedSelectedValidButton.length === 0 ||
+          updatedSelectedValidButton.includes(
+            item.is_valid === 0 ? "Not Valid" : "Valid"
+          )) &&
+        (updatedSelectedIssuer.length === 0 ||
+          updatedSelectedIssuer.includes(item.issuer))
     );
 
     setSelectedData(filteredData);
     setNumberOfSelectedData(filteredData.length);
-    console.log(filteredData.length);
+    // console.log(filteredData.length);
 
-    console.log(numberOfSelectedData);
+    // console.log(numberOfSelectedData);
   };
 
+  const validHandler = (value: string) => {
+    let updatedValidButtons = [...selectedValid];
+
+    if (!updatedValidButtons.includes(value)) {
+      updatedValidButtons.push(value);
+    } else {
+      updatedValidButtons = updatedValidButtons.filter(
+        (item) => item !== value
+      );
+    }
+    if (value in distinctCredential_type) {
+      let updatedSelectedCred = [...selectedCred];
+
+      if (!updatedSelectedCred.includes(value)) {
+        updatedSelectedCred.push(value);
+      } else {
+        updatedSelectedCred = updatedSelectedCred.filter(
+          (item) => item !== value
+        );
+      }
+      setSelectedCred(updatedSelectedCred);
+    }
+    if (value in distinctIssuer) {
+      let updatedSelectedIssuer = [...selectedIssuer];
+
+      if (!updatedSelectedIssuer.includes(value)) {
+        updatedSelectedIssuer.push(value);
+      } else {
+        updatedSelectedIssuer = updatedSelectedIssuer.filter(
+          (item) => item !== value
+        );
+      }
+      setSelectedIssuer(updatedSelectedIssuer);
+    }
+    if (value in ["Valid", "Not Valid"]) {
+      let updatedSelectedValidButton = [...selectedValidButton];
+
+      if (!updatedSelectedValidButton.includes(value)) {
+        updatedSelectedValidButton.push(value);
+      } else {
+        updatedSelectedValidButton = updatedSelectedValidButton.filter(
+          (item) => item !== value
+        );
+      }
+      setSelectedValidButton(updatedSelectedValidButton);
+    }
+    console.log(updatedValidButtons);
+    // The pressed filter button
+    setSelectedValid(updatedValidButtons);
+  };
   const sortSelectedData = (data: IHistoryItem[]) => {
     let tempSelectedData: IHistoryItem[];
     if (data) {
@@ -97,7 +212,7 @@ export default function History() {
   };
 
   useEffect(() => {
-    sortSelectedData(selectedData ? selectedData : data, selectedSort);
+    sortSelectedData(selectedData ? selectedData : data);
   }, [selectedSort]);
 
   const clearScannedCertData = async () => {
@@ -139,11 +254,12 @@ export default function History() {
       {isVisible && (
         <Filter
           data={filter}
-          fontSizeData={fontSizeData}
           onFilter={handleFilter}
           setSort={setSelectedSort}
           selectedSort={selectedSort}
           selectedButtons={selectedButtons}
+          selectedValid={selectedValid}
+          setSelectedValid={setSelectedValid}
         />
       )}
       <FlatList

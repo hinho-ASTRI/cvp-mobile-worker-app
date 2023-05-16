@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import getCertDetails from "~functions/api/cert/getCertDetails";
 
 const getCertIds = async (username: string): Promise<string[]> => {
   const accessToken = (await AsyncStorage.getItem("accessToken")) as string;
@@ -15,16 +16,31 @@ const getCertIds = async (username: string): Promise<string[]> => {
       },
     }
   );
+
   // data is an array of string, i.e. array of cert ids
   const data = await response.json();
-  console.log(data);
-  const items: string[] = data.map((id: string, index: number) => {
-    return {
-      id: index.toString(),
-      UUID: id,
-    };
-  });
 
+  if (!data) {
+    return [];
+  }
+  console.log(data);
+  const fetchData = async (item, accessToken) => {
+    try {
+      const data = await getCertDetails(item, accessToken);
+      if (data) {
+        return {
+          UUID: data.UUID,
+          isValid: data.is_valid,
+        };
+      }
+    } catch (e) {
+      console.log("error:", e);
+    }
+  };
+  const items = await Promise.all(
+    data.items.map((item: string) => fetchData(item, accessToken))
+  );
+  console.log(items);
   return items;
 };
 

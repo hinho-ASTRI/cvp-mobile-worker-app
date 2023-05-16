@@ -53,21 +53,21 @@ export default function BarCodeScan() {
 
   //check if JWT is valid or not
   const username = useAtomValue(usernameAtom);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getWorkerDetails(username, accessToken);
-        if (data) {
-          console.log("Fetch data:", data);
-          console.log("Data fetched successfully, JWT is staill valid!");
-        }
-      } catch (e) {
-        console.log("error:", e);
-        router.replace("/(auth)/sign-in");
-      }
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await getWorkerDetails(username, accessToken);
+  //       if (data) {
+  //         console.log("Fetch data:", data);
+  //         console.log("Data fetched successfully, JWT is staill valid!");
+  //       }
+  //     } catch (e) {
+  //       console.log("error:", e);
+  //       router.replace("/(auth)/sign-in");
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   const accessToken = useAtomValue(accessTokenAtom);
 

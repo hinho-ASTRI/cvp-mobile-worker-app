@@ -30,7 +30,7 @@ export default function Theme() {
 
   return (
     <SortableList
-      className="px-4"
+      // className="px-4"
       onOrderChange={null}
       data={themeList}
       keyExtractor={(item) => item.id}
@@ -45,7 +45,7 @@ export default function Theme() {
           }}
           className="justify-between flex-row border-b-2 py-4 border-slate-300"
         >
-          <Text textColor className={`ml-4 text-${fontSizeData + 1}xl `}>
+          <Text textColor className={`ml-4 text-${fontSizeData + 1}xl px-2`}>
             {item.theme}
           </Text>
         </TouchableOpacity>

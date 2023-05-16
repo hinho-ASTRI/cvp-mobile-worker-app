@@ -10,6 +10,7 @@ type CustomInputProps = {
   placeholder: string;
   icon?: React.ReactElement;
   password?: boolean;
+  widthPerct?: string;
 };
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -18,12 +19,21 @@ const CustomInput: React.FC<CustomInputProps> = ({
   placeholder,
   icon,
   password = false,
+  widthPerct,
 }) => {
   const [hidePass, setHidePass] = useState(true);
 
   return (
-    <View className="w-[70%] bg-white my-3 flex-row border px-2 rounded-md border-[#e8e8e8]">
-      <View className="w-[10%] justify-center items-center ">{icon}</View>
+    <View
+      style={[
+        widthPerct ? { width: widthPerct } : {},
+        // addStyle ? addStyle : {},
+      ]}
+      className="w-[70%] bg-white my-3 flex-row border px-2 rounded-md border-[#e8e8e8]"
+    >
+      {icon ? (
+        <View className="w-[10%] justify-center items-center ">{icon}</View>
+      ) : null}
       <View className="p-2.5 flex-1 flex-row items-center">
         <TextInput
           className="w-[90%] mr-2"
