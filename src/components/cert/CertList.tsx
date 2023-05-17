@@ -10,38 +10,100 @@ import NumberOfSelectedResults from "~components/filter/certList/NumberOfSelecte
 
 type CertListProprs = {
   data: any[];
+  distinctCredentialType: any[];
+  distinctIssuer: any[];
 };
 
-const CertList: React.FC<CertListProprs> = ({ data }) => {
+interface fields {
+  "Credential Type": string[];
+  Issuer: string[];
+}
+export type FilterFieldsProps =
+  | Pick<fields, "Credential Type" | "Issuer">
+  | { Valid: ["Valid", "Not Valid"] };
+
+const CertList: React.FC<CertListProprs> = ({
+  data,
+  distinctCredentialType,
+  distinctIssuer,
+}) => {
   const { t } = useTranslation();
   const [isDown, setIsDown] = useState<boolean>(true);
   const [isVisible, setIsVisible] = useState(false);
   const [filteredData, setFilteredData] = useState<any[] | null>(null);
+
   const [numberOfFilteredData, setNumberOfFilteredData] =
     useState<number>(null);
-  const [selectedValid, setSelectedValid] = useState<string[]>([
+  const [selectedCred, setSelectedCred] = useState<string[]>(
+    distinctCredentialType
+  );
+  const [selectedIssuer, setSelectedIssuer] =
+    useState<string[]>(distinctIssuer);
+  const [selectedValidButton, setSelectedValidButton] = useState<string[]>([
     "Valid",
     "Not Valid",
   ]);
 
-  const handleFilter = (value: string) => {
-    let updatedValidButtons = [...selectedValid];
+  const filterFields: FilterFieldsProps[] = [
+    { Valid: ["Valid", "Not Valid"] },
+    {
+      "Credential Type": distinctCredentialType,
+    } as FilterFieldsProps,
+    { Issuer: distinctIssuer } as FilterFieldsProps,
+  ];
 
-    if (!updatedValidButtons.includes(value)) {
-      updatedValidButtons.push(value);
-    } else {
-      updatedValidButtons = updatedValidButtons.filter(
-        (item) => item !== value
-      );
+  const handleFilter = (value: string) => {
+    const updatedValues = {
+      selectedIssuer: [...selectedIssuer],
+      selectedValidButton: [...selectedValidButton],
+      selectedCred: [...selectedCred],
+    };
+
+    const updateSelected = (key: keyof typeof updatedValues, value: string) => {
+      if (!updatedValues[key].includes(value)) {
+        updatedValues[key].push(value);
+      } else {
+        updatedValues[key] = updatedValues[key].filter(
+          (item) => item !== value
+        );
+      }
+    };
+
+    if (distinctCredentialType.includes(value)) {
+      updateSelected("selectedCred", value);
+    } else if (distinctIssuer.includes(value)) {
+      updateSelected("selectedIssuer", value);
+    } else if (["Valid", "Not Valid"].includes(value)) {
+      updateSelected("selectedValidButton", value);
     }
 
-    setSelectedValid(updatedValidButtons);
-    const selectedData = data.filter((item) =>
-      updatedValidButtons.includes(item.is_valid ? "Valid" : "Not Valid")
-    );
+    setSelectedCred(updatedValues.selectedCred);
+    setSelectedIssuer(updatedValues.selectedIssuer);
+    setSelectedValidButton(updatedValues.selectedValidButton);
 
-    setFilteredData(selectedData);
-    setNumberOfFilteredData(selectedData.length);
+    const filteredData = data.filter(
+      (item) =>
+        (updatedValues.selectedCred.length === 0 ||
+          updatedValues.selectedCred.includes(item.credentialType)) &&
+        (updatedValues.selectedValidButton.length === 0 ||
+          updatedValues.selectedValidButton.includes(
+            item.isValid ? "Valid" : "Not Valid"
+          )) &&
+        (updatedValues.selectedIssuer.length === 0 ||
+          updatedValues.selectedIssuer.includes(item.issuer))
+    );
+    if (
+      updatedValues.selectedCred.length === 0 &&
+      updatedValues.selectedIssuer.length === 0 &&
+      updatedValues.selectedValidButton.length === 0
+    ) {
+      console.log("nothing");
+      setFilteredData([]);
+      setNumberOfFilteredData(0);
+    } else {
+      setFilteredData(filteredData);
+      setNumberOfFilteredData(filteredData.length);
+    }
   };
 
   return (
@@ -51,7 +113,9 @@ const CertList: React.FC<CertListProprs> = ({ data }) => {
         className="flex-row border-b-2 border-slate-300 h-[50] items-center justify-between px-4"
       >
         <NumberOfSelectedResults
-          selectedValid={selectedValid}
+          selectedValidButtons={selectedValidButton}
+          selectedCertButtons={selectedCred}
+          selectedIssuerButtons={selectedIssuer}
           dataLength={data.length}
           numberOfFilteredData={numberOfFilteredData}
         />
@@ -64,8 +128,11 @@ const CertList: React.FC<CertListProprs> = ({ data }) => {
       </View>
       {isVisible && (
         <FilterForCertList
+          filterFields={filterFields}
           onFilter={handleFilter}
-          selectedValid={selectedValid}
+          selectedValidButtons={selectedValidButton}
+          selectedCertButtons={selectedCred}
+          selectedIssuerButtons={selectedIssuer}
         />
       )}
       <View className="p-4 flex-1">

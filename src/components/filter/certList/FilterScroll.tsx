@@ -8,13 +8,13 @@ import { fontSizeAtom } from "~atoms/fontSize";
 type FilterScrollProps = {
   data: string[];
   setData: (value: string) => void;
-  selectedData: string[];
+  selectedButtons: string[];
 };
 
 const FilterScroll: React.FC<FilterScrollProps> = ({
   data,
   setData,
-  selectedData,
+  selectedButtons,
 }) => {
   const fontSizeData = useAtomValue(fontSizeAtom);
   const isDarkTheme = useAtomValue(DarkThemeAtom);
@@ -25,7 +25,7 @@ const FilterScroll: React.FC<FilterScrollProps> = ({
         <TouchableOpacity
           key={index}
           className={`border-2 rounded-lg items-center justify-center mr-2 ${
-            selectedData.includes(value)
+            selectedButtons.includes(value)
               ? ` ${
                   isDarkTheme
                     ? "bg-[#ff6a0d] border-[#fbd582]"

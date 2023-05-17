@@ -128,14 +128,8 @@ export default function History() {
     }
     // The pressed filter button
     setSelectedButtons(updatedSelectedButtons);
-    // console.log(updatedSelectedButtons, "updatedSelectedButtons");
     const filteredData = data.filter(
       (item) =>
-        // updatedSelectedButtons.includes(item.issuer) ||
-        // updatedSelectedButtons.includes(item.credential_type) ||
-        // updatedSelectedButtons.includes(
-        //   item.is_valid === 0 ? "Not Valid" : "Valid"
-        // )
         (updatedSelectedCred.length === 0 ||
           updatedSelectedCred.includes(item.credential_type)) &&
         (updatedSelectedValidButton.length === 0 ||
@@ -148,9 +142,6 @@ export default function History() {
 
     setSelectedData(filteredData);
     setNumberOfSelectedData(filteredData.length);
-    // console.log(filteredData.length);
-
-    // console.log(numberOfSelectedData);
   };
 
   const validHandler = (value: string) => {
