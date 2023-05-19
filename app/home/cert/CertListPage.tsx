@@ -13,15 +13,11 @@ const CertListPage: React.FC = () => {
   const [certList, setCertList] = useState<itemProps[]>([]);
   const router = useRouter();
   const usernameData = useAtomValue(usernameAtom);
-  const [distinctCredentialType, setDistinctCredentialType] = useState<
-    string[] | null
-  >(null);
-  const [distinctIssuer, setDistinctIssuer] = useState<string[] | null>(null);
+
   const [totalItem, setTotalItem] = useState<number | null>(null);
   const [showLoadMoreButton, setShowLoadMoreButton] = useState<boolean>(false);
 
   //pagination
-  // const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10); // hardcoded
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,10 +56,6 @@ const CertListPage: React.FC = () => {
         if (items) {
           setCertList([...certList, ...items]);
           console.log();
-          setDistinctCredentialType([
-            ...new Set(items.map((item) => item.credentialType)),
-          ]);
-          setDistinctIssuer([...new Set(items.map((item) => item.issuer))]);
         }
       }
     } catch (e) {
@@ -91,16 +83,10 @@ const CertListPage: React.FC = () => {
     setCurrentPage((prev) => prev + 1);
   };
 
-  if (
-    certList.length !== 0
-      ? distinctCredentialType && distinctIssuer
-      : null && totalItem !== null
-  ) {
+  if (certList.length !== 0 && totalItem !== null) {
     return (
       <CertList
         data={certList}
-        distinctCredentialType={distinctCredentialType}
-        distinctIssuer={distinctIssuer}
         totalItem={totalItem}
         showLoadMoreButton={showLoadMoreButton}
         loadMoreData={loadMoreData}

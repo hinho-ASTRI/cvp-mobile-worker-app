@@ -18,11 +18,6 @@ const certListItem = ({ item }: { item: any }) => {
       onPress={() => {
         router.push({
           pathname: `/home/cert/${item.UUID}`,
-          params: {
-            credentialType: item.credentialType,
-            issuer: item.issuer,
-            isValid: item.isValid,
-          },
         });
       }}
     >
@@ -33,6 +28,12 @@ const certListItem = ({ item }: { item: any }) => {
         }xl `}
       >
         {item.UUID}
+        {"\n"}
+        Credential Type: {item.credentialType}
+        {"\n"}
+        Issuer: {item.issuer}
+        {"\n"}
+        Valid: {item.isValid.toString()}
       </Text>
     </TouchableOpacity>
   );

@@ -7,28 +7,23 @@ import {
   Dimensions,
   Alert,
 } from "react-native";
-import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import BarcodeMask from "react-native-barcode-mask";
-import * as SQLite from "expo-sqlite";
 import { useAtomValue } from "jotai";
 
 import {
   validateScannedCert,
   validateScannerUser,
 } from "~functions/helper/ajv";
-import insertScannedData from "~functions/sqlite/insertScannedData";
 import { CertDetailsFields } from "~functions/api/cert/getCertDetails";
 import { WorkerModal } from "~functions/api/worker/getWorkerDetails";
 import getTime from "~functions/getTime";
 import getWorkerDetails from "~functions/api/worker/getWorkerDetails";
 import getCertDetails from "~functions/api/cert/getCertDetails";
 import { accessTokenAtom } from "~atoms/accessToken";
-import { usernameAtom } from "~atoms/username";
 
 const { width } = Dimensions.get("window");
-const db = SQLite.openDatabase("scanned_cert_data.db");
 
 export type InsertCertField = CertDetailsFields & {
   scanned_date: string;
@@ -41,34 +36,6 @@ type InsertWorkerField = WorkerModal & {
 };
 
 export default function BarCodeScan() {
-  const router = useRouter();
-
-  useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "create table if not exists scanned_cert_data (index_id INTEGER PRIMARY KEY AUTOINCREMENT, UUID INTEGER, credential_type text, end_date text, extra text, is_valid INTEGER, issuer text, start_date text, worker_signature text, scanned_date text, timeStamp INTEGER);"
-      );
-    });
-  }, []);
-
-  //check if JWT is valid or not
-  const username = useAtomValue(usernameAtom);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await getWorkerDetails(username, accessToken);
-  //       if (data) {
-  //         console.log("Fetch data:", data);
-  //         console.log("Data fetched successfully, JWT is staill valid!");
-  //       }
-  //     } catch (e) {
-  //       console.log("error:", e);
-  //       router.replace("/(auth)/sign-in");
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
   const accessToken = useAtomValue(accessTokenAtom);
 
   const { t } = useTranslation();
@@ -135,8 +102,6 @@ export default function BarCodeScan() {
               timeStamp: currentTime,
             };
             console.log("combinedData", combinedData);
-
-            insertScannedData(combinedData, db);
           }
         } catch (e) {
           console.log("error:", e);
@@ -160,12 +125,6 @@ export default function BarCodeScan() {
               `ID: ${data.id}\n Name: ${data.name}\n Gender: ${data.gender}\n HKID: ${data.hkid}`,
               [{ text: "OK", onPress: () => console.log("OK Pressed") }]
             );
-            const combinedData: InsertWorkerField = {
-              ...data,
-              scanned_date: timeObj.date,
-              timeStamp: currentTime,
-            };
-            console.log("combinedData", combinedData);
           }
         } catch (e) {
           console.log("error:", e);

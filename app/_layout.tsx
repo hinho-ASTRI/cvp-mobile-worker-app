@@ -18,13 +18,6 @@ export default function Layout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen
-        name="modal"
-        options={{
-          presentation: "modal",
-          headerTitle: "Info",
-        }}
-      />
-      <Stack.Screen
         name="home"
         options={{
           headerShown: false,

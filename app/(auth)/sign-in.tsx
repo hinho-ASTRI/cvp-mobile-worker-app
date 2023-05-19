@@ -30,8 +30,6 @@ export default function SignIn() {
     username,
     password
   ) => {
-    // fetch("http://localhost:8080/login", {
-    // fetch("http://192.168.2.100:8081/auth/", {
     fetch("http://192.168.1.12:8081/auth/", {
       method: "POST",
       headers: {
@@ -43,12 +41,10 @@ export default function SignIn() {
         if (!response.ok) {
           throw new Error("Login failed");
         }
-        // return response.json();
         return response.text();
       })
       .then((data) => {
         // store tokens in AsyncStorage
-        // AsyncStorage.setItem("accessToken", data.token);
         AsyncStorage.setItem("accessToken", data);
         setAccessToken(data);
         console.log(data);
