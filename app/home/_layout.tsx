@@ -31,10 +31,10 @@ export default function Layout1() {
       <Tabs.Screen
         name="cert"
         options={{
-          href:
-            usernameData === "user" || usernameData === "W000001"
-              ? "home/"
-              : null,
+          href: "home/",
+
+          // usernameData === "user" || usernameData === "W000001" ? "home/"
+          //   : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <FontAwesome name="home" size={focused ? 28 : 24} color={color} />
@@ -81,10 +81,9 @@ export default function Layout1() {
       <Tabs.Screen
         name="Add"
         options={{
-          href:
-            usernameData === "user" || usernameData === "W000001"
-              ? "home/Add"
-              : null,
+          href: "home/Add",
+          // usernameData === "user" || usernameData === "W000001" ? "home/Add"
+          //   : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <AntDesign
@@ -117,10 +116,9 @@ export default function Layout1() {
       <Tabs.Screen
         name="Profile"
         options={{
-          href:
-            usernameData === "user" || usernameData === "W000001"
-              ? "home/Profile"
-              : null,
+          href: "home/Profile",
+          // usernameData === "user" || usernameData === "W000001"? "home/Profile"
+          //   : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <FontAwesome name="user" size={focused ? 28 : 24} color={color} />

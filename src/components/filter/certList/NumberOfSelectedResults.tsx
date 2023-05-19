@@ -9,19 +9,20 @@ type NumberOfSelectedResultsProps = {
   selectedValidButtons: string[];
   selectedCertButtons: string[];
   selectedIssuerButtons: string[];
-  dataLength: number;
+  totalItem: number;
   numberOfFilteredData: number;
 };
 
 const getDisplayText = (
   selectedButtons: string[][],
-  dataLength: number,
+  totalItem: number,
   numberOfFilteredData: number,
   t: TFunction
 ) => {
+  console.log(totalItem);
   if (
     selectedButtons.every((buttons: string[]) => buttons.length === 0) ||
-    dataLength === 0
+    totalItem === 0
   ) {
     return t("No");
   }
@@ -29,14 +30,14 @@ const getDisplayText = (
     ? numberOfFilteredData === 0
       ? t("No")
       : numberOfFilteredData
-    : dataLength;
+    : totalItem;
 };
 
 const NumberOfSelectedResults: React.FC<NumberOfSelectedResultsProps> = ({
   selectedValidButtons,
   selectedCertButtons,
   selectedIssuerButtons,
-  dataLength,
+  totalItem,
   numberOfFilteredData,
 }) => {
   const fontSizeData = useAtomValue(fontSizeAtom);
@@ -48,12 +49,12 @@ const NumberOfSelectedResults: React.FC<NumberOfSelectedResultsProps> = ({
   ];
   const displayText = getDisplayText(
     selectedButtons,
-    dataLength,
+    totalItem,
     numberOfFilteredData,
     t
   );
   const displayResult =
-    dataLength <= 1 ||
+    totalItem <= 1 ||
     (numberOfFilteredData !== null && numberOfFilteredData <= 1)
       ? t("Result")
       : t("Results");

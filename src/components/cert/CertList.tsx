@@ -1,17 +1,23 @@
 import { FlatList } from "react-native";
-import { View } from "react-native-ui-lib";
+import { View, Button, Text } from "react-native-ui-lib";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAtomValue } from "jotai";
+import { AntDesign } from "@expo/vector-icons";
 
+import { DarkThemeAtom } from "~atoms/darkTheme";
 import CertListItem from "./CertListItem";
 import FilterButton from "~components/filter/FilterButton";
 import FilterForCertList from "~components/filter/certList/FilterForCertList";
 import NumberOfSelectedResults from "~components/filter/certList/NumberOfSelectedResults";
 
-type CertListProprs = {
+type CertListProps = {
   data: any[];
   distinctCredentialType: any[];
   distinctIssuer: any[];
+  totalItem: number;
+  showLoadMoreButton: boolean;
+  loadMoreData: () => void;
 };
 
 interface fields {
@@ -22,11 +28,16 @@ export type FilterFieldsProps =
   | Pick<fields, "Credential Type" | "Issuer">
   | { Valid: ["Valid", "Not Valid"] };
 
-const CertList: React.FC<CertListProprs> = ({
+const CertList: React.FC<CertListProps> = ({
   data,
   distinctCredentialType,
   distinctIssuer,
+  totalItem,
+  showLoadMoreButton,
+  loadMoreData,
 }) => {
+  const isDarkTheme = useAtomValue(DarkThemeAtom);
+
   const { t } = useTranslation();
   const [isDown, setIsDown] = useState<boolean>(true);
   const [isVisible, setIsVisible] = useState(false);
@@ -97,7 +108,6 @@ const CertList: React.FC<CertListProprs> = ({
       updatedValues.selectedIssuer.length === 0 &&
       updatedValues.selectedValidButton.length === 0
     ) {
-      console.log("nothing");
       setFilteredData([]);
       setNumberOfFilteredData(0);
     } else {
@@ -106,8 +116,31 @@ const CertList: React.FC<CertListProprs> = ({
     }
   };
 
+  const renderFooter = () => {
+    return (
+      <View>
+        <Button
+          bg-textColor
+          label="Load More"
+          screenBG
+          iconOnRight
+          iconSource={() => (
+            <View className="ml-2">
+              <AntDesign
+                name={isDown ? "caretdown" : "caretup"}
+                size={12}
+                color={`${isDarkTheme ? "black" : "white"}`}
+              />
+            </View>
+          )}
+          onPress={loadMoreData}
+        ></Button>
+      </View>
+    );
+  };
+
   return (
-    <View flex>
+    <>
       <View
         bg-screenBG
         className="flex-row border-b-2 border-slate-300 h-[50] items-center justify-between px-4"
@@ -116,15 +149,15 @@ const CertList: React.FC<CertListProprs> = ({
           selectedValidButtons={selectedValidButton}
           selectedCertButtons={selectedCred}
           selectedIssuerButtons={selectedIssuer}
-          dataLength={data.length}
+          totalItem={totalItem}
           numberOfFilteredData={numberOfFilteredData}
         />
-        <FilterButton
+        {/* <FilterButton
           isDown={isDown}
           setIsDown={setIsDown}
           setIsVisible={setIsVisible}
           isVisible={isVisible}
-        />
+        /> */}
       </View>
       {isVisible && (
         <FilterForCertList
@@ -135,14 +168,17 @@ const CertList: React.FC<CertListProprs> = ({
           selectedIssuerButtons={selectedIssuer}
         />
       )}
-      <View className="p-4 flex-1">
+      <View className="p-4 mb-12">
         <FlatList
           data={filteredData ? filteredData : data}
           renderItem={({ item }) => <CertListItem item={item} />}
           keyExtractor={(item, index) => index.toString()}
+          ListFooterComponent={() =>
+            showLoadMoreButton ? renderFooter() : null
+          }
         />
       </View>
-    </View>
+    </>
   );
 };
 

@@ -8,7 +8,7 @@ const certListItem = ({ item }: { item: any }) => {
   const fontSizeData = useAtomValue(fontSizeAtom);
 
   const router = useRouter();
-
+  console.log(item);
   return (
     <TouchableOpacity
       bg-screenBG
@@ -18,6 +18,11 @@ const certListItem = ({ item }: { item: any }) => {
       onPress={() => {
         router.push({
           pathname: `/home/cert/${item.UUID}`,
+          params: {
+            credentialType: item.credentialType,
+            issuer: item.issuer,
+            isValid: item.isValid,
+          },
         });
       }}
     >

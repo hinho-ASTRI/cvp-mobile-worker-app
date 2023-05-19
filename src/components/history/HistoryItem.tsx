@@ -8,7 +8,7 @@ type HistoryItemProps = {
     UUID: string;
     credential_type: string;
     end_date: string;
-    extra: string;
+    extra: any;
     is_valid: number;
     issuer: string;
     start_date: string;
