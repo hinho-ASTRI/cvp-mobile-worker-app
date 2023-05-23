@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity } from "react-native-ui-lib";
+import { Text, TouchableOpacity, View } from "react-native-ui-lib";
 import { useRouter } from "expo-router";
 import { useAtomValue } from "jotai";
 
@@ -35,6 +35,11 @@ const certListItem = ({ item }: { item: any }) => {
         {"\n"}
         Valid: {item.isValid.toString()}
       </Text>
+      {!item.isValid && (
+        <View className="absolute bottom-0 right-0 bg-red-600 px-2 py-1 m-1 rounded-tl-md">
+          <Text textColor>Expired</Text>
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
