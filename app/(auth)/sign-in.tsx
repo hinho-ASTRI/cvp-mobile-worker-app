@@ -52,13 +52,11 @@ export default function SignIn() {
         setUsernameData(username);
         // redirect to MainScreen
 
-        router.replace("/home/cert");
-
-        // if (username === "user" || username === "W000001") {
-        //   router.replace("/home/cert");
-        // } else if (username === "admin") {
-        //   router.replace("/home/BarCodeScanner");
-        // }
+        if (username === "admin") {
+          router.replace("/home/BarCodeScanner");
+        } else {
+          router.replace("/home/cert");
+        }
       })
       .catch((error) => {
         console.error(error);

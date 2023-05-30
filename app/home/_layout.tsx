@@ -31,10 +31,7 @@ export default function Layout1() {
       <Tabs.Screen
         name="cert"
         options={{
-          href: "home/",
-
-          // usernameData === "user" || usernameData === "W000001" ? "home/"
-          //   : null,
+          href: usernameData !== "admin" ? "home/" : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <FontAwesome name="home" size={focused ? 28 : 24} color={color} />
@@ -64,7 +61,7 @@ export default function Layout1() {
       <Tabs.Screen
         name="Add"
         options={{
-          href: "home/Add",
+          href: null,
           // usernameData === "user" || usernameData === "W000001" ? "home/Add"
           //   : null,
           tabBarIcon: ({ color, focused }) => (
@@ -99,9 +96,7 @@ export default function Layout1() {
       <Tabs.Screen
         name="Profile"
         options={{
-          href: "home/Profile",
-          // usernameData === "user" || usernameData === "W000001"? "home/Profile"
-          //   : null,
+          href: usernameData !== "admin" ? "home/Profile" : null,
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused}>
               <FontAwesome name="user" size={focused ? 28 : 24} color={color} />

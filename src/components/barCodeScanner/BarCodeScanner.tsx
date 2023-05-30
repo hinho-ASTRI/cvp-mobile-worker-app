@@ -16,24 +16,12 @@ import {
   validateScannedCert,
   validateScannerUser,
 } from "~functions/helper/ajv";
-import { CertDetailsFields } from "~functions/api/cert/getCertDetails";
-import { WorkerModal } from "~functions/api/worker/getWorkerDetails";
 import getTime from "~functions/getTime";
 import getWorkerDetails from "~functions/api/worker/getWorkerDetails";
 import getCertDetails from "~functions/api/cert/getCertDetails";
 import { accessTokenAtom } from "~atoms/accessToken";
 
 const { width } = Dimensions.get("window");
-
-export type InsertCertField = CertDetailsFields & {
-  scanned_date: string;
-  timeStamp: number;
-};
-
-type InsertWorkerField = WorkerModal & {
-  scanned_date: string;
-  timeStamp: number;
-};
 
 export default function BarCodeScan() {
   const accessToken = useAtomValue(accessTokenAtom);
@@ -96,12 +84,6 @@ export default function BarCodeScan() {
               `UUID: ${data.UUID}\n Credential Type: ${data.credential_type}\n Start Date: ${data.start_date}\n End Date: ${data.end_date}\n Is Valid: ${data.is_valid}\n Issuer: ${data.issuer}`,
               [{ text: "OK", onPress: () => console.log("OK Pressed") }]
             );
-            const combinedData: InsertCertField = {
-              ...data,
-              scanned_date: timeObj.date,
-              timeStamp: currentTime,
-            };
-            console.log("combinedData", combinedData);
           }
         } catch (e) {
           console.log("error:", e);
