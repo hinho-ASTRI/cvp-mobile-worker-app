@@ -19,3 +19,11 @@ Then press `a` for Android, `i` for iOS
 - [Expo Router: Docs](https://expo.github.io/router)
 - [Expo Router: Repo](https://github.com/expo/router)
 - [Request for Comments](https://github.com/expo/router/discussions/1)
+
+## Remind
+
+```bash
+npx expo install react-native-svg
+```
+
+is required in the generation of QR code

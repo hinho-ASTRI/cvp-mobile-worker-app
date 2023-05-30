@@ -33,11 +33,7 @@
       "icon": "./assets/icon/CIC_logo_icon.png",
       "package": "com.user9510.cvpworkerexporouterapp"
     },
-    "extra": {
-      "eas": {
-        "projectId": "c88aa11d-10d6-4d86-aab6-3c53271651c2"
-      }
-    },
+
     "runtimeVersion": {
       "policy": "sdkVersion"
     },
@@ -67,10 +63,5 @@
   },
   "android": {
     "package": "com.user9510.cvpworkerexporouterapp"
-  },
-  "extra": {
-    "eas": {
-      "projectId": "a1a6467f-5085-4e93-a182-7ac5ea810aee"
-    }
   }
 }
