@@ -37,7 +37,7 @@ const certListItem = ({ item }: { item: any }) => {
       </Text>
       {!item.isValid && (
         <View className="absolute bottom-0 right-0 bg-red-600 px-2 py-1 m-1 rounded-tl-md">
-          <Text className="text-[#fff]">Expired</Text>
+          <Text textColor>Expired</Text>
         </View>
       )}
     </TouchableOpacity>
